@@ -1,12 +1,8 @@
-import * as Alert from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { registerSchema } from '@/models/schemas/auth-forms.schema'
 import { useForm } from '@tanstack/react-form'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { AlertCircleIcon, Eye, EyeClosed } from 'lucide-react'
-import { useState } from 'react'
+import { Field } from './-components/field'
+import { Button } from '@/components/ui/button'
 
 export const Route = createFileRoute('/(auth)/register')({
   component: RouteComponent,
@@ -20,13 +16,33 @@ function RouteComponent() {
       password: '',
       confirmPassword: '',
     },
-    asyncDebounceMs: 500,
-    validators: { onChange: registerSchema },
     onSubmit: async ({ value }) => {
-      console.log(value)
+      try {
+        alert(
+          `Enviando Credenciais ${value.name} / ${value.email} / ${value.password}`,
+        )
+      } catch (error) {
+      } finally {
+        form.reset()
+      }
     },
   })
-  const [showPswrd, setShowPswrd] = useState(false)
+
+  const emailValidators = {
+    onChangeAsyncDebounceMs: 500,
+    onChangeAsync: registerSchema.shape.email,
+    onBlur: registerSchema.shape.email,
+  }
+
+  const passwordValidators = {
+    onChangeAsyncDebounceMs: 300,
+    onChangeAsync: registerSchema.shape.password,
+    onBlur: registerSchema.shape.password,
+  }
+
+  const confirmPasswordValidators = {
+    onChangeAsyncDebounceMs: 300,
+  }
 
   return (
     <div className="w-full min-h-screen flex items-center justify-between gap-4 px-10">
@@ -46,129 +62,58 @@ function RouteComponent() {
           <form.Field
             name="name"
             children={(field) => (
-              <div className="flex flex-col space-y-2">
-                <Label htmlFor="name">Seu Apelido</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-              </div>
+              <Field
+                type="text"
+                label="Seu Nome (opcional)"
+                value={field.state.value}
+                onChange={field.handleChange}
+                errors={field.state.meta.errors as []}
+              />
             )}
           />
           <form.Field
             name="email"
+            validators={{ ...emailValidators }}
             children={(field) => (
-              <div className="flex flex-col space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="text"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-                {field.state.meta.errors.length > 0 && (
-                  <Alert.Alert variant="destructive">
-                    <AlertCircleIcon />
-                    <Alert.AlertTitle className="font-bold">
-                      Uh oh...
-                    </Alert.AlertTitle>
-                    <Alert.AlertDescription>
-                      <ul className="list-disc">
-                        {field.state.meta.errors.map((error, i) => (
-                          <li key={i}>{error?.message}</li>
-                        ))}
-                      </ul>
-                    </Alert.AlertDescription>
-                  </Alert.Alert>
-                )}
-              </div>
+              <Field
+                type="email"
+                label="Seu Email"
+                value={field.state.value}
+                onChange={field.handleChange}
+                errors={field.state.meta.errors as []}
+              />
             )}
           />
           <form.Field
             name="password"
+            validators={{ ...passwordValidators }}
             children={(field) => (
-              <div className="flex flex-col space-y-2">
-                <Label htmlFor="password">Senha</Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPswrd ? 'text' : 'password'}
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                  />
-                  <Button
-                    variant="ghost"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                    onClick={() => setShowPswrd(!showPswrd)}
-                  >
-                    {showPswrd ? (
-                      <EyeClosed className="h-5 w-5 text-gray-400" />
-                    ) : (
-                      <Eye className="h-5 w-5 text-gray-400" />
-                    )}
-                  </Button>
-                </div>
-                {field.state.meta.errors.length > 0 && (
-                  <Alert.Alert variant="destructive">
-                    <AlertCircleIcon />
-                    <Alert.AlertTitle className="font-bold">
-                      Uh oh...
-                    </Alert.AlertTitle>
-                    <Alert.AlertDescription>
-                      <ul className="list-disc">
-                        {field.state.meta.errors.map((error, i) => (
-                          <li key={i}>{error?.message}</li>
-                        ))}
-                      </ul>
-                    </Alert.AlertDescription>
-                  </Alert.Alert>
-                )}
-              </div>
+              <Field
+                type="password"
+                label="Sua Senha"
+                value={field.state.value}
+                onChange={field.handleChange}
+                errors={field.state.meta.errors as []}
+              />
             )}
           />
-
           <form.Field
             name="confirmPassword"
+            validators={{
+              ...confirmPasswordValidators,
+              onChangeAsync: ({ value }) =>
+                value !== form.getFieldValue('password')
+                  ? { message: 'As senhas não coincidem.' }
+                  : undefined,
+            }}
             children={(field) => (
-              <div className="flex flex-col space-y-2">
-                <Label htmlFor="confirmPassword">Confirme sua senha</Label>
-                <div className="relative">
-                  <Input
-                    id="confirmPassword"
-                    type={showPswrd ? 'text' : 'password'}
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                  />
-                  <Button
-                    variant="ghost"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                    onClick={() => setShowPswrd(!showPswrd)}
-                  >
-                    {showPswrd ? (
-                      <EyeClosed className="h-5 w-5 text-gray-400" />
-                    ) : (
-                      <Eye className="h-5 w-5 text-gray-400" />
-                    )}
-                  </Button>
-                </div>
-                {field.state.meta.errors.length > 0 && (
-                  <Alert.Alert variant="destructive">
-                    <AlertCircleIcon />
-                    <Alert.AlertTitle className="font-bold">
-                      Uh oh...
-                    </Alert.AlertTitle>
-                    <Alert.AlertDescription>
-                      <ul className="list-disc">
-                        {field.state.meta.errors.map((error, i) => (
-                          <li key={i}>{error?.message}</li>
-                        ))}
-                      </ul>
-                    </Alert.AlertDescription>
-                  </Alert.Alert>
-                )}
-              </div>
+              <Field
+                type="password"
+                label="Confirme sua Senha"
+                value={field.state.value}
+                onChange={field.handleChange}
+                errors={field.state.meta.errors as []}
+              />
             )}
           />
 
@@ -181,14 +126,14 @@ function RouteComponent() {
                 disabled={!canSubmit || isSubmitting}
                 className="cursor-pointer"
               >
-                Registro
+                {isSubmitting ? 'Registrando...' : 'Registrar'}
               </Button>
             )}
           />
           <p>
-            Já tem uma conta?{' '}
-            <Link to="/register" className="text-[#FF0080] hover:underline">
-              Faça login
+            Já tem um cadastro?{' '}
+            <Link to="/login" className="text-[#FF0080] hover:underline">
+              Entre aqui
             </Link>
           </p>
         </form>

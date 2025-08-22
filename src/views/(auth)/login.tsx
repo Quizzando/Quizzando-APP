@@ -1,12 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 import { baseSchema } from '@/models/schemas/auth-forms.schema'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { Eye, EyeClosed, AlertCircleIcon } from 'lucide-react'
-import { useState } from 'react'
-import * as Alert from '@/components/ui/alert'
+import { Field } from './-components/field'
 
 export const Route = createFileRoute('/(auth)/login')({
   component: RouteComponent,
@@ -18,13 +14,30 @@ function RouteComponent() {
       email: '',
       password: '',
     },
-    asyncDebounceMs: 500,
-    validators: { onChange: baseSchema },
+    validators: {
+      onBlur: baseSchema,
+    },
     onSubmit: async ({ value }) => {
-      console.log(value)
+      try {
+        alert(`Enviando Credenciais ${value.email} / ${value.password}`)
+      } catch (error) {
+      } finally {
+        form.reset()
+      }
     },
   })
-  const [showPswrd, setShowPswrd] = useState(false)
+
+  const emailValidators = {
+    onChangeAsyncDebounceMs: 500,
+    onChangeAsync: baseSchema.shape.email,
+    onBlur: baseSchema.shape.email,
+  }
+
+  const passwordValidators = {
+    onChangeAsyncDebounceMs: 300,
+    onChangeAsync: baseSchema.shape.password,
+    onBlur: baseSchema.shape.password,
+  }
 
   return (
     <div className="w-full min-h-screen flex items-center justify-between gap-4 px-10">
@@ -43,73 +56,28 @@ function RouteComponent() {
         >
           <form.Field
             name="email"
+            validators={{ ...emailValidators }}
             children={(field) => (
-              <div className="flex flex-col space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="text"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-                {field.state.meta.errors.length > 0 && (
-                  <Alert.Alert variant="destructive">
-                    <AlertCircleIcon />
-                    <Alert.AlertTitle className="font-bold">
-                      Uh oh...
-                    </Alert.AlertTitle>
-                    <Alert.AlertDescription>
-                      <ul className="list-disc">
-                        {field.state.meta.errors.map((error, i) => (
-                          <li key={i}>{error?.message}</li>
-                        ))}
-                      </ul>
-                    </Alert.AlertDescription>
-                  </Alert.Alert>
-                )}
-              </div>
+              <Field
+                type="email"
+                label="Email"
+                value={field.state.value}
+                onChange={field.handleChange}
+                errors={field.state.meta.errors as []}
+              />
             )}
           />
           <form.Field
             name="password"
+            validators={{ ...passwordValidators }}
             children={(field) => (
-              <div className="flex flex-col space-y-2">
-                <Label htmlFor="password">Senha</Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPswrd ? 'text' : 'password'}
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                  />
-                  <Button
-                    variant="ghost"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                    onClick={() => setShowPswrd(!showPswrd)}
-                  >
-                    {showPswrd ? (
-                      <EyeClosed className="h-5 w-5 text-gray-400" />
-                    ) : (
-                      <Eye className="h-5 w-5 text-gray-400" />
-                    )}
-                  </Button>
-                </div>
-                {field.state.meta.errors.length > 0 && (
-                  <Alert.Alert variant="destructive">
-                    <AlertCircleIcon />
-                    <Alert.AlertTitle className="font-bold">
-                      Uh oh...
-                    </Alert.AlertTitle>
-                    <Alert.AlertDescription>
-                      <ul className="list-disc">
-                        {field.state.meta.errors.map((error, i) => (
-                          <li key={i}>{error?.message}</li>
-                        ))}
-                      </ul>
-                    </Alert.AlertDescription>
-                  </Alert.Alert>
-                )}
-              </div>
+              <Field
+                type="password"
+                label="Senha"
+                value={field.state.value}
+                onChange={field.handleChange}
+                errors={field.state.meta.errors as []}
+              />
             )}
           />
           <form.Subscribe
@@ -121,7 +89,7 @@ function RouteComponent() {
                 disabled={!canSubmit || isSubmitting}
                 className="cursor-pointer"
               >
-                Login
+                {isSubmitting ? 'Logando...' : 'Login'}
               </Button>
             )}
           />
