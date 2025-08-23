@@ -5,11 +5,13 @@ import { TanstackDevtools } from '@tanstack/react-devtools'
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
 import type { QueryClient } from '@tanstack/react-query'
-import { ThemeProvider } from '@/contexts/theme-context'
+import { ThemeProvider } from '@/controllers/theme-context'
 import { Header } from '@/components/Header'
+import type { AuthProviderState } from '@/controllers/auth-context'
 
 interface MyRouterContext {
   queryClient: QueryClient
+  auth: AuthProviderState
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({

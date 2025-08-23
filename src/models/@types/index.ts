@@ -9,5 +9,4 @@ export type User = {
 
 export interface Auth {
   user: User | null
-  token: string | null
 }
