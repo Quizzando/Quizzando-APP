@@ -17,9 +17,7 @@ export function Header() {
         </Link>
 
         <Link to="/login">
-          <Button variant="outline" className="cursor-pointer">
-            Entre
-          </Button>
+          <Button variant="outline">Entre</Button>
         </Link>
       </nav>
     </header>

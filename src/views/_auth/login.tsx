@@ -90,22 +90,31 @@ function RouteComponent() {
             />
           )}
         />
-        <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
-          children={([canSubmit, isSubmitting]) => (
-            <Button
-              type="submit"
-              variant={!canSubmit || isSubmitting ? 'outline' : 'default'}
-              disabled={!canSubmit || isSubmitting}
-              className="cursor-pointer"
-            >
-              {isSubmitting ? 'Logando...' : 'Login'}
-            </Button>
-          )}
-        />
+        <div className="flex flex-col space-y-2">
+          <form.Subscribe
+            selector={(state) => [state.canSubmit, state.isSubmitting]}
+            children={([canSubmit, isSubmitting]) => (
+              <Button
+                type="submit"
+                variant={!canSubmit || isSubmitting ? 'outline' : 'default'}
+                disabled={!canSubmit || isSubmitting}
+              >
+                {isSubmitting ? 'Logando...' : 'Login'}
+              </Button>
+            )}
+          />
+          <Link to="/forgot-password" className="text-xs text-[#FF0080] self-end">
+            Esqueci minha senha
+          </Link>
+        </div>
+
         <p>
           Não é registrado?{' '}
-          <Link to="/register" className="text-[#FF0080] hover:underline">
+          <Link
+            to="/register"
+            search={{ redirect: '/' }}
+            className="text-[#FF0080] hover:underline"
+          >
             Cadastre-se
           </Link>
         </p>

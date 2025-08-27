@@ -1,10 +1,18 @@
 import { registerSchema } from '@/models/schemas/auth-forms.schema'
 import { useForm } from '@tanstack/react-form'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, redirect } from '@tanstack/react-router'
 import { Field } from './-components/field'
 import { Button } from '@/components/ui/button'
 
 export const Route = createFileRoute('/_auth/register')({
+  validateSearch: (search) => ({
+    redirect: (search.redirect as string) || '/',
+  }),
+  beforeLoad: ({ context, search }) => {
+    if (context.auth.user) {
+      throw redirect({ to: search.redirect })
+    }
+  },
   component: RouteComponent,
 })
 
@@ -121,15 +129,19 @@ function RouteComponent() {
               type="submit"
               variant={!canSubmit || isSubmitting ? 'outline' : 'default'}
               disabled={!canSubmit || isSubmitting}
-              className="cursor-pointer"
             >
               {isSubmitting ? 'Registrando...' : 'Registrar'}
             </Button>
           )}
         />
+
         <p>
           Já tem um cadastro?{' '}
-          <Link to="/login" className="text-[#FF0080] hover:underline">
+          <Link
+            to="/login"
+            search={{ redirect: '/' }}
+            className="text-[#FF0080] hover:underline"
+          >
             Entre aqui
           </Link>
         </p>

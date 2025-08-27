@@ -10,7 +10,7 @@ interface FieldProps {
   label: string
   value: string
   onChange: (value: string) => void
-  errors: { message: string }[]
+  errors?: { message: string }[]
 }
 
 export const Field = ({ type, label, value, onChange, errors }: FieldProps) => {
@@ -42,7 +42,7 @@ export const Field = ({ type, label, value, onChange, errors }: FieldProps) => {
           </Button>
         )}
       </div>
-      {errors?.length > 0 && <ErrorField errors={errors} />}
+      {errors && errors?.length > 0 && <ErrorField errors={errors} />}
     </div>
   )
 }
