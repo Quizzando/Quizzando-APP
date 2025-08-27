@@ -15,7 +15,8 @@ import { Route as IndexRouteImport } from './views/index'
 import { Route as AuthRegisterRouteImport } from './views/_auth/register'
 import { Route as AuthLoginRouteImport } from './views/_auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './views/_auth/forgot-password'
-import { Route as AppDashboardRouteImport } from './views/_app/dashboard'
+import { Route as AppDashboardIndexRouteImport } from './views/_app/dashboard/index'
+import { Route as AppDashboardCourseIdRouteImport } from './views/_app/dashboard/course/$id'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
@@ -45,50 +46,71 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => AuthRoute,
 } as any)
-const AppDashboardRoute = AppDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const AppDashboardIndexRoute = AppDashboardIndexRouteImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardCourseIdRoute = AppDashboardCourseIdRouteImport.update({
+  id: '/dashboard/course/$id',
+  path: '/dashboard/course/$id',
   getParentRoute: () => AppRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/dashboard': typeof AppDashboardRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
+  '/dashboard': typeof AppDashboardIndexRoute
+  '/dashboard/course/$id': typeof AppDashboardCourseIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/dashboard': typeof AppDashboardRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
+  '/dashboard': typeof AppDashboardIndexRoute
+  '/dashboard/course/$id': typeof AppDashboardCourseIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/_auth': typeof AuthRouteWithChildren
-  '/_app/dashboard': typeof AppDashboardRoute
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
+  '/_app/dashboard/': typeof AppDashboardIndexRoute
+  '/_app/dashboard/course/$id': typeof AppDashboardCourseIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/forgot-password' | '/login' | '/register'
+  fullPaths:
+    | '/'
+    | '/forgot-password'
+    | '/login'
+    | '/register'
+    | '/dashboard'
+    | '/dashboard/course/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/forgot-password' | '/login' | '/register'
+  to:
+    | '/'
+    | '/forgot-password'
+    | '/login'
+    | '/register'
+    | '/dashboard'
+    | '/dashboard/course/$id'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/_auth'
-    | '/_app/dashboard'
     | '/_auth/forgot-password'
     | '/_auth/login'
     | '/_auth/register'
+    | '/_app/dashboard/'
+    | '/_app/dashboard/course/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -141,22 +163,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthForgotPasswordRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/_app/dashboard': {
-      id: '/_app/dashboard'
+    '/_app/dashboard/': {
+      id: '/_app/dashboard/'
       path: '/dashboard'
       fullPath: '/dashboard'
-      preLoaderRoute: typeof AppDashboardRouteImport
+      preLoaderRoute: typeof AppDashboardIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/dashboard/course/$id': {
+      id: '/_app/dashboard/course/$id'
+      path: '/dashboard/course/$id'
+      fullPath: '/dashboard/course/$id'
+      preLoaderRoute: typeof AppDashboardCourseIdRouteImport
       parentRoute: typeof AppRoute
     }
   }
 }
 
 interface AppRouteChildren {
-  AppDashboardRoute: typeof AppDashboardRoute
+  AppDashboardIndexRoute: typeof AppDashboardIndexRoute
+  AppDashboardCourseIdRoute: typeof AppDashboardCourseIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppDashboardRoute: AppDashboardRoute,
+  AppDashboardIndexRoute: AppDashboardIndexRoute,
+  AppDashboardCourseIdRoute: AppDashboardCourseIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

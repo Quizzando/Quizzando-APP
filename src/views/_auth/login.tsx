@@ -1,18 +1,10 @@
-import { createFileRoute, Link, redirect } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 import { baseSchema } from '@/models/schemas/auth-forms.schema'
 import { Button } from '@/components/ui/button'
 import { Field } from './-components/field'
 
 export const Route = createFileRoute('/_auth/login')({
-  validateSearch: (search) => ({
-    redirect: (search.redirect as string) || '/',
-  }),
-  beforeLoad: ({ context, search }) => {
-    if (context.auth.user) {
-      throw redirect({ to: search.redirect })
-    }
-  },
   component: RouteComponent,
 })
 
@@ -30,7 +22,7 @@ function RouteComponent() {
     },
     onSubmit: async ({ value }) => {
       try {
-        alert(`Enviando Credenciais ${value.email} / ${value.password}`)
+        // alert(`Enviando Credenciais ${value.email} / ${value.password}`)
         await auth.login(value.email, value.password)
         navigate({ to: '/dashboard' })
       } catch (error) {
@@ -103,18 +95,17 @@ function RouteComponent() {
               </Button>
             )}
           />
-          <Link to="/forgot-password" className="text-xs text-[#FF0080] self-end">
+          <Link
+            to="/forgot-password"
+            className="text-xs text-[#FF0080] self-end"
+          >
             Esqueci minha senha
           </Link>
         </div>
 
         <p>
           Não é registrado?{' '}
-          <Link
-            to="/register"
-            search={{ redirect: '/' }}
-            className="text-[#FF0080] hover:underline"
-          >
+          <Link to="/register" className="text-[#FF0080] hover:underline">
             Cadastre-se
           </Link>
         </p>

@@ -1,25 +1,17 @@
 import { registerSchema } from '@/models/schemas/auth-forms.schema'
 import { useForm } from '@tanstack/react-form'
-import { createFileRoute, Link, redirect } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { Field } from './-components/field'
 import { Button } from '@/components/ui/button'
 
 export const Route = createFileRoute('/_auth/register')({
-  validateSearch: (search) => ({
-    redirect: (search.redirect as string) || '/',
-  }),
-  beforeLoad: ({ context, search }) => {
-    if (context.auth.user) {
-      throw redirect({ to: search.redirect })
-    }
-  },
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const form = useForm({
     defaultValues: {
-      name: '',
+      username: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -27,7 +19,7 @@ function RouteComponent() {
     onSubmit: async ({ value }) => {
       try {
         alert(
-          `Enviando Credenciais ${value.name} / ${value.email} / ${value.password}`,
+          `Enviando Credenciais ${value.username} / ${value.email} / ${value.password}`,
         )
       } catch (error) {
       } finally {
@@ -35,6 +27,12 @@ function RouteComponent() {
       }
     },
   })
+
+  const usernameValidators = {
+    onChangeAsyncDebounceMs: 500,
+    onChangeAsync: registerSchema.shape.username,
+    onBlur: registerSchema.shape.username,
+  }
 
   const emailValidators = {
     onChangeAsyncDebounceMs: 500,
@@ -65,11 +63,12 @@ function RouteComponent() {
         }}
       >
         <form.Field
-          name="name"
+          name="username"
+          validators={{ ...usernameValidators }}
           children={(field) => (
             <Field
               type="text"
-              label="Seu Nome (opcional)"
+              label="Seu Nome"
               value={field.state.value}
               onChange={field.handleChange}
               errors={field.state.meta.errors as []}
@@ -137,11 +136,7 @@ function RouteComponent() {
 
         <p>
           Já tem um cadastro?{' '}
-          <Link
-            to="/login"
-            search={{ redirect: '/' }}
-            className="text-[#FF0080] hover:underline"
-          >
+          <Link to="/login" className="text-[#FF0080] hover:underline">
             Entre aqui
           </Link>
         </p>

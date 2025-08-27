@@ -29,7 +29,7 @@ export const authService = {
   },
   // === REGISTER FUNCTION === //
   async register({
-    name,
+    username,
     email,
     password,
   }: Omit<RegisterFormSchema, 'confirmPassword'>): Promise<User | null> {
@@ -38,7 +38,7 @@ export const authService = {
       const response = await fetch(`${BASE_API_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ username, email, password }),
       })
 
       // 2. Lança erros caso a requisição tenha falhado
@@ -64,41 +64,27 @@ export const authService = {
   // === LOGIN FUNCTION === //
   async login({ email, password }: LoginFormSchema): Promise<User | null> {
     try {
-      // // 1. Chama a API do backend
-      // const response = await fetch(`${BASE_API_URL}/api/auth/login`, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password }),
-      // })
+      // 1. Chama a API do backend
+      const response = await fetch(`${BASE_API_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
 
-      // // 2. Lança erros caso a requisição tenha falhado
-      // if (!response.ok) {
-      //   throw new Error(`Erro ao logar: ${response.status}`)
-      // }
+      // 2. Lança erros caso a requisição tenha falhado
+      if (!response.ok) {
+        throw new Error(`Erro ao logar: ${response.status}`)
+      }
 
-      // // 3. Se deu certo, armazena o token no localStorage
-      // const { token } = await response.json()
-      // this.setToken(token)
+      // 3. Se deu certo, armazena o token no localStorage
+      const { token } = await response.json()
+      this.setToken(token)
 
-      // // 4. Extrai as informações de dentro do token (nesse caso, o ID)
-      // const { id } = this.decryptToken(token) as { id: string }
+      // 4. Extrai as informações de dentro do token (nesse caso, o ID)
+      const { id } = this.decryptToken(token) as { id: string }
 
-      // // 5. Busca usuário por ID e retorna
-      // return await this.getUser(id)
-
-      // === MOCKAGEM PARA TESTES === //
-      // 1. Simulação da API com atraso de 3 segundos
-      await new Promise((resolve) => setTimeout(resolve, 3000))
-      // 2. retorno do token
-      this.setToken('token-100-por-cento-autentico-confia')
-      // 3. retorno do usuário mockado
-      return {
-        id: '1a2b3c4d',
-        name: `Quizzando-${password}`,
-        email: email,
-        score: 100,
-        admin: true,
-      } as User
+      // 5. Busca usuário por ID e retorna
+      return await this.getUser(id)
     } catch (error) {
       console.error('Erro ao logar usuário: ', error)
       return null
