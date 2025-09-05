@@ -8,6 +8,7 @@ import type { QueryClient } from '@tanstack/react-query'
 import { ThemeProvider } from '@/controllers/theme-context'
 import { Header } from '@/components/Header'
 import type { AuthProviderState } from '@/controllers/auth-context'
+import { Footer } from '@/components/Footer/Footer'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -17,7 +18,7 @@ interface MyRouterContext {
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => (
     <>
-      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
         <Header />
         <Outlet />
         <TanstackDevtools
@@ -32,6 +33,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
             TanStackQueryDevtools,
           ]}
         />
+        <Footer/>
       </ThemeProvider>
     </>
   ),

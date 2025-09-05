@@ -13,8 +13,8 @@ export const Route = createFileRoute('/_auth')({
   },
   component: () => (
     <div className="w-full min-h-screen flex items-center justify-between gap-4 px-10">
-      <div className="flex-1/2">.</div>
       <Outlet />
+      <div className="flex-1/2">.</div>
     </div>
   ),
 })

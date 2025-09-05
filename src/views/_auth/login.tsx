@@ -97,7 +97,7 @@ function RouteComponent() {
           />
           <Link
             to="/forgot-password"
-            className="text-xs text-[#FF0080] self-end"
+            className="text-xs text-[#FF0080] self-end hover:underline"
           >
             Esqueci minha senha
           </Link>

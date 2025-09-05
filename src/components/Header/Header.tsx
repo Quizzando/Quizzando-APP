@@ -7,8 +7,23 @@ import * as Avatar from '../ui/avatar'
 export function Header() {
   const { user } = useAuth()
 
+  const NAVITEMS = [
+    {
+      name: 'Home',
+      href: '/'
+    },
+    {
+      name: 'Jogar',
+      href: '/courses'
+    },
+    {
+      name: 'Categories',
+      href: '/categories'
+    }
+  ];
+
   return (
-    <header className="py-2 px-10">
+    <header className=" py-1 px-10 ">
       <nav className="flex items-center justify-between">
         <Link to="/">
           <GradientText
@@ -20,8 +35,10 @@ export function Header() {
           </GradientText>
         </Link>
 
+        {NAVITEMS.map((item) => <Link key={item.href} to={item.href}>{item.name}</Link>)}
+
         {user ? (
-          <Link to="/dashboard">
+          <Link to="/dashboard" className='flex items-center gap-2 p-1 rounded-md hover:bg-primary'>
             <Avatar.Avatar className="w-12 h-12 border-3 border-primary">
               <Avatar.AvatarImage
                 src={user.pfp}
@@ -29,6 +46,7 @@ export function Header() {
               />
               <Avatar.AvatarFallback>{user.username[0]}</Avatar.AvatarFallback>
             </Avatar.Avatar>
+            <p className='font-bold'>{user.username}</p>
           </Link>
         ) : (
           <Link to="/login">
