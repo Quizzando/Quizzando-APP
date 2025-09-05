@@ -10,17 +10,17 @@ export function Header() {
   const NAVITEMS = [
     {
       name: 'Home',
-      href: '/'
+      href: '/',
     },
     {
       name: 'Jogar',
-      href: '/courses'
+      href: '/courses',
     },
     {
       name: 'Categories',
-      href: '/categories'
-    }
-  ];
+      href: '/categories',
+    },
+  ]
 
   return (
     <header className=" py-1 px-10 ">
@@ -35,10 +35,17 @@ export function Header() {
           </GradientText>
         </Link>
 
-        {NAVITEMS.map((item) => <Link key={item.href} to={item.href}>{item.name}</Link>)}
+        {NAVITEMS.map((item) => (
+          <Link key={item.href} to={item.href}>
+            {item.name}
+          </Link>
+        ))}
 
         {user ? (
-          <Link to="/dashboard" className='flex items-center gap-2 p-1 rounded-md hover:bg-primary'>
+          <Link
+            to="/dashboard"
+            className="flex items-center gap-2 p-1 rounded-md hover:bg-primary"
+          >
             <Avatar.Avatar className="w-12 h-12 border-3 border-primary">
               <Avatar.AvatarImage
                 src={user.pfp}
@@ -46,7 +53,7 @@ export function Header() {
               />
               <Avatar.AvatarFallback>{user.username[0]}</Avatar.AvatarFallback>
             </Avatar.Avatar>
-            <p className='font-bold'>{user.username}</p>
+            <p className="font-bold">{user.username}</p>
           </Link>
         ) : (
           <Link to="/login">
