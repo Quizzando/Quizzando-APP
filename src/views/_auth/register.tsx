@@ -51,11 +51,14 @@ function RouteComponent() {
   }
 
   return (
-    <div className="flex-1/2 flex flex-col items-center p-2">
+    <div className="flex-1/2 flex flex-col justify-center items-center">
       {/* === FORM CONTAINER ===  */}
-      <h1 className="text-3xl mb-10 font-bold">Realize seu Cadastro</h1>
+      <div className="flex gap-3 mb-3 items-center">
+        <div className="w-1 rounded-2xl bg-chart-5 h-6"></div>
+        <h1 className="text-3xl font-medium">Registro</h1>
+      </div>
       <form
-        className="max-w-1/2 w-1/2 p-2 flex flex-col space-y-8"
+        className="max-w-1/2 w-1/2 p-2 flex flex-col space-y-5"
         onSubmit={(e) => {
           e.preventDefault()
           e.stopPropagation()
@@ -68,7 +71,7 @@ function RouteComponent() {
           children={(field) => (
             <Field
               type="text"
-              label="Seu Nome"
+              label="Nome"
               value={field.state.value}
               onChange={field.handleChange}
               errors={field.state.meta.errors as []}
@@ -81,7 +84,7 @@ function RouteComponent() {
           children={(field) => (
             <Field
               type="email"
-              label="Seu Email"
+              label="Email"
               value={field.state.value}
               onChange={field.handleChange}
               errors={field.state.meta.errors as []}
@@ -94,7 +97,7 @@ function RouteComponent() {
           children={(field) => (
             <Field
               type="password"
-              label="Sua Senha"
+              label="Senha"
               value={field.state.value}
               onChange={field.handleChange}
               errors={field.state.meta.errors as []}
@@ -113,7 +116,7 @@ function RouteComponent() {
           children={(field) => (
             <Field
               type="password"
-              label="Confirme sua Senha"
+              label="Confirmar Senha"
               value={field.state.value}
               onChange={field.handleChange}
               errors={field.state.meta.errors as []}
@@ -126,6 +129,7 @@ function RouteComponent() {
           children={([canSubmit, isSubmitting]) => (
             <Button
               type="submit"
+              className="bg-secondary rounded-3xl w-38 self-center hover:bg-secondary/60"
               variant={!canSubmit || isSubmitting ? 'outline' : 'default'}
               disabled={!canSubmit || isSubmitting}
             >
@@ -134,8 +138,8 @@ function RouteComponent() {
           )}
         />
 
-        <p>
-          Já tem um cadastro?{' '}
+        <p className="self-center text-xs">
+          Já possui uma conta?{' '}
           <Link to="/login" className="text-[#FF0080] hover:underline">
             Entre aqui
           </Link>

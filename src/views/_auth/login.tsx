@@ -47,7 +47,7 @@ function RouteComponent() {
   return (
     <div className="flex-1/2 flex flex-col justify-center items-center">
       {/* === FORM CONTAINER ===  */}
-      <div className="flex gap-4 mb-3 items-center">
+      <div className="flex gap-3 mb-3 items-center">
         <div className="w-1 rounded-2xl bg-chart-5 h-6"></div>
         <h1 className="text-3xl font-medium">Login</h1>
       </div>
