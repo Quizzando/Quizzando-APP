@@ -18,13 +18,15 @@ export const Field = ({ type, label, value, onChange, errors }: FieldProps) => {
 
   return (
     <div className="flex flex-col space-y-2">
-      <Label htmlFor={label}>{label}</Label>
+      {/* <Label htmlFor={label}>{label}</Label> */}
       <div className="relative">
         <Input
           type={
             type === 'password' ? (showPswrd ? 'text' : 'password') : 'text'
           }
+          placeholder={label}
           value={value}
+          className="rounded-2xl bg-gray-200"
           onChange={(e) => onChange(e.target.value)}
         />
         {type === 'password' && (

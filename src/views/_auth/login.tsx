@@ -45,11 +45,14 @@ function RouteComponent() {
   }
 
   return (
-    <div className="flex-1/2 flex flex-col items-center p-2">
+    <div className="flex-1/2 flex flex-col justify-center items-center">
       {/* === FORM CONTAINER ===  */}
-      <h1 className="text-3xl mb-10 font-bold">Realize seu Login</h1>
+      <div className="flex gap-4 mb-3 items-center">
+        <div className="w-1 rounded-2xl bg-chart-5 h-6"></div>
+        <h1 className="text-3xl font-medium">Login</h1>
+      </div>
       <form
-        className="max-w-1/2 w-1/2 p-2 flex flex-col space-y-8"
+        className="max-w-1/2 w-1/2 p-2 flex flex-col space-y-5"
         onSubmit={(e) => {
           e.preventDefault()
           e.stopPropagation()
@@ -82,29 +85,28 @@ function RouteComponent() {
             />
           )}
         />
-        <div className="flex flex-col space-y-2">
-          <form.Subscribe
-            selector={(state) => [state.canSubmit, state.isSubmitting]}
-            children={([canSubmit, isSubmitting]) => (
-              <Button
-                type="submit"
-                variant={!canSubmit || isSubmitting ? 'outline' : 'default'}
-                disabled={!canSubmit || isSubmitting}
-              >
-                {isSubmitting ? 'Logando...' : 'Login'}
-              </Button>
-            )}
-          />
-          <Link
-            to="/forgot-password"
-            className="text-xs text-[#FF0080] self-end hover:underline"
-          >
-            Esqueci minha senha
-          </Link>
-        </div>
+        <Link
+          to="/forgot-password"
+          className="text-xs text-secondary self-center hover:underline"
+        >
+          Esqueceu sua senha?
+        </Link>
+        <form.Subscribe
+          selector={(state) => [state.canSubmit, state.isSubmitting]}
+          children={([canSubmit, isSubmitting]) => (
+            <Button
+              type="submit"
+              className="bg-secondary rounded-3xl w-38 self-center hover:bg-secondary/60"
+              variant={!canSubmit || isSubmitting ? 'outline' : 'default'}
+              disabled={!canSubmit || isSubmitting}
+            >
+              {isSubmitting ? 'Entrando...' : 'Entrar'}
+            </Button>
+          )}
+        />
 
-        <p>
-          Não é registrado?{' '}
+        <p className="self-center text-xs">
+          Não possui uma conta?{' '}
           <Link to="/register" className="text-[#FF0080] hover:underline">
             Cadastre-se
           </Link>

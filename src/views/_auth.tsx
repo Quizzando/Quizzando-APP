@@ -12,9 +12,13 @@ export const Route = createFileRoute('/_auth')({
     }
   },
   component: () => (
-    <div className="w-full min-h-screen flex items-center justify-between gap-4 px-10">
-      <Outlet />
-      <div className="flex-1/2">.</div>
+    <div className="w-full h-[85vh] flex justify-center items-center bg-gradient-to-b from-[#916CF5] to-[#553F8F]">
+      <div className="flex items-center justify-between bg-white w-[80%] h-min">
+        <Outlet />
+        <div>
+          <img src="/form-image.svg" width={'420px'} alt="Form Image" />
+        </div>
+      </div>
     </div>
   ),
 })
