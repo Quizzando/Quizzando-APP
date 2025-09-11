@@ -33,7 +33,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <div className="flex flex-row items-center gap-2 p-4">
+                <div className="flex flex-row items-center gap-2 p-4 cursor-pointer">
                     <Avatar className="w-12 h-12 border-3 border-primary">
                         <AvatarImage
                             src={user.pfp}
