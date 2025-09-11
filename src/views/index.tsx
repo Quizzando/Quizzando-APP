@@ -28,10 +28,10 @@ export default function App() {
 
   return (
     <main className="flex flex-col">
-      <section className="relative w-full min-h-screen bg-gradient-to-b from-primary to-accent shadow-lg">
+      <section className="relative w-full min-h-screen bg-gradient-to-b from-primary to-accent shadow-lg pb-20">
         <div className="container max-w-5xl mx-auto px-4 py-16 md:py-32">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8 text-white">
-            <header className="flex flex-col space-y-6 max-w-full lg:max-w-[50%]">
+            <div className="flex flex-col space-y-6 max-w-full lg:max-w-[50%]">
               <h1 className="text-4xl md:text-5xl font-bold font-['Slackey'] tracking-wider text-balance">
                 Quizzando
               </h1>
@@ -48,7 +48,7 @@ export default function App() {
                   Cadastre-se para começar
                 </Button>
               </Link>
-            </header>
+            </div>
 
             <div className="flex-shrink-0">
               <img

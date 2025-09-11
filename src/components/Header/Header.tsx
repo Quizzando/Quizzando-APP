@@ -3,6 +3,7 @@ import { Button } from '../ui/button'
 import { GradientText } from '../bits/GradientText'
 import { useAuth } from '@/hooks/use-auth'
 import * as Avatar from '../ui/avatar'
+import { UserMenu } from '../UserMenu'
 
 export function Header() {
   const { user } = useAuth()
@@ -42,19 +43,7 @@ export function Header() {
         ))}
 
         {user ? (
-          <Link
-            to="/dashboard"
-            className="flex items-center gap-2 p-1 rounded-md hover:bg-primary"
-          >
-            <Avatar.Avatar className="w-12 h-12 border-3 border-primary">
-              <Avatar.AvatarImage
-                src={user.pfp}
-                alt={`${user.username} profile`}
-              />
-              <Avatar.AvatarFallback>{user.username[0]}</Avatar.AvatarFallback>
-            </Avatar.Avatar>
-            <p className="font-bold">{user.username}</p>
-          </Link>
+          <UserMenu user={user} />
         ) : (
           <Link to="/login">
             <Button variant="outline">Entre</Button>

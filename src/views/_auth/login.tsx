@@ -22,7 +22,6 @@ function RouteComponent() {
     },
     onSubmit: async ({ value }) => {
       try {
-        // alert(`Enviando Credenciais ${value.email} / ${value.password}`)
         await auth.login(value.email, value.password)
         navigate({ to: '/dashboard' })
       } catch (error) {
