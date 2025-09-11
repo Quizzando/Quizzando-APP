@@ -10,7 +10,7 @@ function RouteComponent() {
   const { auth } = Route.useRouteContext()
 
   return (
-    <div className="space-y-10">
+    <div className="container max-w-5xl mx-auto min-h-screen space-y-10">
       <div>
         <h1 className="text-3xl font-bold">
           Olá, <span className="text-[#FF0080]">{auth.user?.username}</span>!

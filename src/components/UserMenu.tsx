@@ -1,7 +1,7 @@
 import type { User } from "@/models/@types"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuShortcut } from "./ui/dropdown-menu"
-import { Settings, Home, LogOut, Plus, } from 'lucide-react'
+import { Settings, Home, LogOut, Plus, User2 } from 'lucide-react'
 import { Link } from "@tanstack/react-router"
 import { useAuth } from "@/hooks/use-auth"
 
@@ -10,7 +10,7 @@ interface UserMenuProps {
 }
 
 export const UserMenu = ({ user }: UserMenuProps) => {
-    const {logout} = useAuth()
+    const { logout } = useAuth()
 
     const ACTIONS = [
         {
@@ -19,10 +19,15 @@ export const UserMenu = ({ user }: UserMenuProps) => {
             icon: <Home />,
         },
         {
+            label: 'Perfil',
+            to: '/profile',
+            icon: <User2 />,
+        },
+        {
             label: 'Configurações',
             to: '/settings',
             icon: <Settings />,
-        }
+        },
     ]
 
     return (
@@ -52,14 +57,20 @@ export const UserMenu = ({ user }: UserMenuProps) => {
                             </DropdownMenuItem>
                         </Link>
                     )}
-                    {user.admin && <Link to={"/"}>
-                        <DropdownMenuItem>
-                            Criar
-                            <DropdownMenuShortcut>
-                                <Plus />
-                            </DropdownMenuShortcut>
-                        </DropdownMenuItem>
-                    </Link>}
+                    {user.admin && (
+                        <>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuLabel>Área do Administrador</DropdownMenuLabel>
+                            <Link to={"/"}>
+                                <DropdownMenuItem>
+                                    Criar
+                                    <DropdownMenuShortcut>
+                                        <Plus />
+                                    </DropdownMenuShortcut>
+                                </DropdownMenuItem>
+                            </Link>
+                        </>
+                    )}
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem variant="destructive" onClick={logout}>
