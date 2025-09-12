@@ -1,8 +1,9 @@
 import { registerSchema } from '@/models/schemas/auth-forms.schema'
 import { useForm } from '@tanstack/react-form'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { Field } from './-components/field'
 import { Button } from '@/components/ui/button'
+import { AuthRedirect } from './-components/authRedirect'
 
 export const Route = createFileRoute('/_auth/register')({
   component: RouteComponent,
@@ -129,7 +130,7 @@ function RouteComponent() {
           children={([canSubmit, isSubmitting]) => (
             <Button
               type="submit"
-              className="bg-secondary rounded-3xl w-38 self-center hover:bg-secondary/60"
+              className="bg-secondary rounded-3xl w-38 self-center hover:bg-secondary/60 cursor-pointer transition-colors duration-200"
               variant={!canSubmit || isSubmitting ? 'outline' : 'default'}
               disabled={!canSubmit || isSubmitting}
             >
@@ -138,12 +139,7 @@ function RouteComponent() {
           )}
         />
 
-        <p className="self-center text-xs">
-          Já possui uma conta?{' '}
-          <Link to="/login" className="text-[#FF0080] hover:underline">
-            Entre aqui
-          </Link>
-        </p>
+        <AuthRedirect message='Já possui uma conta?' linkText='Entre aqui' to='/login' />
       </form>
     </div>
   )
