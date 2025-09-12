@@ -45,6 +45,7 @@ export default function App() {
               <h1 className="text-4xl md:text-5xl font-bold font-['Slackey'] tracking-wider text-balance">
                 Quizzando
               </h1>
+              {/* <img src="/logo1.svg" alt="Logo" width={'300px'} /> */}
               <h2 className="text-xl md:text-2xl font-semibold text-pretty">
                 Aprender nunca foi tão interativo!
               </h2>

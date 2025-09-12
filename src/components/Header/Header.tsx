@@ -24,31 +24,34 @@ export function Header() {
   ]
 
   return (
-    <header className=" py-1 px-10 ">
+    <header className=" py-2 px-8 shadow-md sticky z-1">
       <nav className="flex items-center justify-between">
-        <Link to="/">
-          <GradientText
-            colors={['#FF0080', '#7928CA']}
-            showBorder
-            className="p-2"
-          >
-            Quizzando
-          </GradientText>
-        </Link>
-
-        {NAVITEMS.map((item) => (
-          <Link key={item.href} to={item.href}>
-            {item.name}
+        <div className="flex items-center gap-16">
+          <Link to="/">
+            <h1 className="text-3xl font-bold font-['Slackey'] tracking-wider text-balance my-2.5">
+              Quizzando
+            </h1>
           </Link>
-        ))}
 
-        {user ? (
-          <UserMenu user={user} />
-        ) : (
+          {NAVITEMS.map((item) => (
+            <Link key={item.href} to={item.href} className='text-foreground hover:text-primary font-medium transition-colors duration-200'>
+              {item.name}
+            </Link>
+          ))}
+        </div>
+
+        <div className='flex items-center gap-8'>
           <Link to="/login">
-            <Button variant="outline">Entre</Button>
+            <Button variant="default" className='cursor-pointer hover:bg-accent'>Crie um Quiz</Button>
           </Link>
-        )}
+          {user ? (
+            <UserMenu user={user} />
+          ) : (
+            <Link to="/login">
+              <Button variant="outline" className='cursor-pointer'>Entre</Button>
+            </Link>
+          )}
+        </div>
       </nav>
     </header>
   )
