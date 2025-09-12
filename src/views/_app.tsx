@@ -1,19 +1,13 @@
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { Footer } from '@/components/Footer/Footer'
+import { Header } from '@/components/Header'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_app')({
-  beforeLoad: ({ context, location }) => {
-    if (!context.auth.user) {
-      throw redirect({
-        to: '/login',
-        // search: {
-        //   redirect: location.href,
-        // },
-      })
-    }
-  },
   component: () => (
-    <div className="max-w-10xl container mx-auto flex flex-col p-6 space-y-6">
+    <>
+      <Header />
       <Outlet />
-    </div>
+      <Footer />
+    </>
   ),
 })
