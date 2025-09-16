@@ -1,20 +1,13 @@
-import { createFileRoute, Link, redirect } from '@tanstack/react-router'
-import { Button } from '@/components/ui/button'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { FastForward, Palette, LucidePencil } from 'lucide-react'
+import { useAuth } from '@/hooks/use-auth'
+import { createFileRoute } from '@tanstack/react-router'
+import { LandingPage } from '@/views/_auth/-index'
+import { HomePage } from '@/views/_app/-index'
 
 export const Route = createFileRoute('/')({
-  beforeLoad: ({ context, location }) => {
-    if (context.auth.user) {
-      throw redirect({
-        to: '/dashboard',
-        // search: {
-        //   redirect: location.href,
-        // },
-      })
-    }
+  component: () => {
+    const { user } = useAuth()
+    return user ? <HomePage /> : <LandingPage />
   },
-  component: App,
 })
 
 export default function App() {

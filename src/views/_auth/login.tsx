@@ -24,7 +24,7 @@ function RouteComponent() {
     onSubmit: async ({ value }) => {
       try {
         await auth.login(value.email, value.password)
-        navigate({ to: '/dashboard' })
+        navigate({ to: '/' })
       } catch (error) {
       } finally {
         form.reset()
