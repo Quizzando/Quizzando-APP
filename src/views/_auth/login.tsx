@@ -1,8 +1,9 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 import { baseSchema } from '@/models/schemas/auth-forms.schema'
 import { Button } from '@/components/ui/button'
 import { Field } from './-components/field'
+import { AuthRedirect } from './-components/authRedirect'
 
 export const Route = createFileRoute('/_auth/login')({
   component: RouteComponent,
@@ -84,18 +85,13 @@ function RouteComponent() {
             />
           )}
         />
-        <Link
-          to="/forgot-password"
-          className="text-xs text-secondary self-center hover:underline"
-        >
-          Esqueceu sua senha?
-        </Link>
+        <AuthRedirect linkText='Esqueceu sua senha?' to='/forgot-password' />
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
             <Button
               type="submit"
-              className="bg-secondary rounded-3xl w-38 self-center hover:bg-secondary/60"
+              className="bg-secondary rounded-3xl w-38 self-center hover:bg-secondary/60 cursor-pointer transition-colors duration-200"
               variant={!canSubmit || isSubmitting ? 'outline' : 'default'}
               disabled={!canSubmit || isSubmitting}
             >
@@ -104,12 +100,7 @@ function RouteComponent() {
           )}
         />
 
-        <p className="self-center text-xs">
-          Não possui uma conta?{' '}
-          <Link to="/register" className="text-[#FF0080] hover:underline">
-            Cadastre-se
-          </Link>
-        </p>
+        <AuthRedirect message='Não possui uma conta?' linkText='Cadastre-se' to='/register' />
       </form>
     </div>
   )
