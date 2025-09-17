@@ -1,6 +1,6 @@
-import * as Card from '@/components/ui/card'
 import { MOCK_COURSES } from '@/constants/mock'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
+import { CourseCard } from '@/components/CourseCard'
 
 export const Route = createFileRoute('/_app/dashboard/')({
   component: RouteComponent,
@@ -22,40 +22,13 @@ function RouteComponent() {
       </div>
 
       <div className="border-4 border-primary p-6 rounded-xl">
-        <h1 className="text-3xl font-bold mb-6">Lista de Cursos</h1>
+        <h2 className="text-2xl font-bold mb-1">Lista de Cursos</h2>
+        <p className="text-lg font-light text-muted-foreground text-pretty mb-2">
+          Descubra novos conhecimentos e habilidades com nossos cursos
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {MOCK_COURSES.map((c) => (
-            <Link
-              key={c.id}
-              to={'/dashboard/course/$id'}
-              params={{ id: c.id! }}
-              className="group"
-            >
-              <Card.Card
-                className="
-              transition-all duration-300 rounded-xl
-              group-hover:scale-[1.02]
-            "
-                style={{
-                  boxShadow: `0 0 0 transparent`,
-                }}
-                onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.boxShadow =
-                    `0 2px 10px 1px ${c.theme}80`
-                }}
-                onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.boxShadow =
-                    `0 0 0 transparent`
-                }}
-              >
-                <Card.CardHeader className="flex justify-center text-4xl">
-                  {c.icon && <c.icon />}
-                </Card.CardHeader>
-                <Card.CardContent className="text-center font-medium">
-                  {c.name}
-                </Card.CardContent>
-              </Card.Card>
-            </Link>
+            <CourseCard key={c.id} course={c} />
           ))}
         </div>
       </div>

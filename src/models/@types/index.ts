@@ -20,6 +20,13 @@ export type Course = {
   icon?: ComponentType
   theme?: string
 
+  backgroundImage?: string
+  description?: string
+  category?: string
+  students?: number
+  duration?: string
+  rating?: number
+
   createdAt?: string
   updatedAt?: string
 }
