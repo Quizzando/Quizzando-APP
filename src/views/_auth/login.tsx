@@ -85,7 +85,7 @@ function RouteComponent() {
             />
           )}
         />
-        <AuthRedirect linkText='Esqueceu sua senha?' to='/forgot-password' />
+        <AuthRedirect linkText="Esqueceu sua senha?" to="/forgot-password" />
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
@@ -100,7 +100,11 @@ function RouteComponent() {
           )}
         />
 
-        <AuthRedirect message='Não possui uma conta?' linkText='Cadastre-se' to='/register' />
+        <AuthRedirect
+          message="Não possui uma conta?"
+          linkText="Cadastre-se"
+          to="/register"
+        />
       </form>
     </div>
   )
