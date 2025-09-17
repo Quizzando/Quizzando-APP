@@ -52,16 +52,16 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
       setIsLoading(true)
       setError(null)
 
-      // const loggedUser = await authService.login({ email, password })
-      // setUser(loggedUser)
+      const loggedUser = await authService.login({ email, password })
+      setUser(loggedUser)
 
       // === MOCKAGEM PARA TESTES =========================================== //
       // 1. Simulação da API com atraso de 3 segundos
-      await new Promise((resolve) => setTimeout(resolve, 3000))
+      // await new Promise((resolve) => setTimeout(resolve, 3000))
       // 2. retorno do token
-      authService.setToken('token-100-por-cento-autentico-confia')
+      // authService.setToken('token-100-por-cento-autentico-confia')
       // 3. retorno do usuário mockado
-      setUser(MOCK_USER)
+      // setUser(MOCK_USER)
     } catch (error) {
       console.error(error)
       setError('Erro ao logar usuário')

@@ -3,9 +3,8 @@ import type { User } from '../@types'
 import type {
   LoginFormSchema,
   RegisterFormSchema,
-} from '../schemas/auth-forms.schema'
+} from '@/models/schemas/auth-forms.schema'
 
-const BASE_API_URL = import.meta.env.VITE_BASE_API_URL as string
 const AUTH_TOKEN_KEY = 'auth-token'
 
 export const authService = {
@@ -25,7 +24,11 @@ export const authService = {
   decryptToken(token: string) {
     const payload = decodeJwt(token)
     console.log(payload)
-    return payload
+
+    // ID do usuário está dentro deste claim:
+    return {
+      id: payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'],
+    }
   },
   // === REGISTER FUNCTION === //
   async register({
@@ -35,7 +38,7 @@ export const authService = {
   }: Omit<RegisterFormSchema, 'confirmPassword'>): Promise<User | null> {
     try {
       // 1. Chama a API do backend
-      const response = await fetch(`${BASE_API_URL}/api/auth/register`, {
+      const response = await fetch(`/api/user/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password }),
@@ -47,14 +50,17 @@ export const authService = {
       }
 
       // 3. Se deu certo, armazena o token no localStorage
-      const { token } = await response.json()
-      this.setToken(token)
+      // const { token } = await response.json()
+      // this.setToken(token)
+
+      // 3. Se deu certo, tenta executar o login automático
+      return await this.login({ email, password })
 
       // 4. Extrai as informações de dentro do token (nesse caso, o ID)
-      const { id } = this.decryptToken(token) as { id: string }
+      // const { id } = this.decryptToken(token) as { id: string }
 
       // 5. Busca usuário por ID e retorna
-      return await this.getUser(id)
+      // return await this.getUser(id)
     } catch (error) {
       console.error('Erro ao registrar usuário: ', error)
       return null
@@ -65,7 +71,7 @@ export const authService = {
   async login({ email, password }: LoginFormSchema): Promise<User | null> {
     try {
       // 1. Chama a API do backend
-      const response = await fetch(`${BASE_API_URL}/api/auth/login`, {
+      const response = await fetch(`/api/user/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -101,7 +107,7 @@ export const authService = {
         return null
       }
 
-      const response = await fetch(`${BASE_API_URL}/api/auth/user/${id}`, {
+      const response = await fetch(`/api/user/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -16,6 +16,7 @@ import { Route as AuthRegisterRouteImport } from './views/_auth/register'
 import { Route as AuthLoginRouteImport } from './views/_auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './views/_auth/forgot-password'
 import { Route as AppProfileRouteImport } from './views/_app/profile'
+import { Route as AppDashboardIndexRouteImport } from './views/_app/dashboard/index'
 import { Route as AppCursoIdRouteImport } from './views/_app/curso/$id'
 import { Route as AppCursoDisciplinaIdRouteImport } from './views/_app/curso/disciplina/$id'
 
@@ -52,6 +53,11 @@ const AppProfileRoute = AppProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AppRoute,
 } as any)
+const AppDashboardIndexRoute = AppDashboardIndexRouteImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCursoIdRoute = AppCursoIdRouteImport.update({
   id: '/curso/$id',
   path: '/curso/$id',
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/curso/$id': typeof AppCursoIdRoute
+  '/dashboard': typeof AppDashboardIndexRoute
   '/curso/disciplina/$id': typeof AppCursoDisciplinaIdRoute
 }
 export interface FileRoutesByTo {
@@ -79,6 +86,7 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/curso/$id': typeof AppCursoIdRoute
+  '/dashboard': typeof AppDashboardIndexRoute
   '/curso/disciplina/$id': typeof AppCursoDisciplinaIdRoute
 }
 export interface FileRoutesById {
@@ -91,6 +99,7 @@ export interface FileRoutesById {
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
   '/_app/curso/$id': typeof AppCursoIdRoute
+  '/_app/dashboard/': typeof AppDashboardIndexRoute
   '/_app/curso/disciplina/$id': typeof AppCursoDisciplinaIdRoute
 }
 export interface FileRouteTypes {
@@ -102,6 +111,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/curso/$id'
+    | '/dashboard'
     | '/curso/disciplina/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -111,6 +121,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/curso/$id'
+    | '/dashboard'
     | '/curso/disciplina/$id'
   id:
     | '__root__'
@@ -122,6 +133,7 @@ export interface FileRouteTypes {
     | '/_auth/login'
     | '/_auth/register'
     | '/_app/curso/$id'
+    | '/_app/dashboard/'
     | '/_app/curso/disciplina/$id'
   fileRoutesById: FileRoutesById
 }
@@ -182,6 +194,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProfileRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/dashboard/': {
+      id: '/_app/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/curso/$id': {
       id: '/_app/curso/$id'
       path: '/curso/$id'
@@ -202,12 +221,14 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppProfileRoute: typeof AppProfileRoute
   AppCursoIdRoute: typeof AppCursoIdRoute
+  AppDashboardIndexRoute: typeof AppDashboardIndexRoute
   AppCursoDisciplinaIdRoute: typeof AppCursoDisciplinaIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppProfileRoute: AppProfileRoute,
   AppCursoIdRoute: AppCursoIdRoute,
+  AppDashboardIndexRoute: AppDashboardIndexRoute,
   AppCursoDisciplinaIdRoute: AppCursoDisciplinaIdRoute,
 }
 

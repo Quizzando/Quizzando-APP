@@ -7,16 +7,11 @@ interface ErrorFieldProps {
 
 export const ErrorField = ({ errors }: ErrorFieldProps) => {
   return (
-    <Alert.Alert variant="destructive">
-      <AlertCircleIcon />
-      <Alert.AlertTitle className="font-bold">Uh oh...</Alert.AlertTitle>
-      <Alert.AlertDescription>
-        <ul className="list-disc">
-          {errors.map((error, i) => (
-            <li key={i}>{error?.message}</li>
-          ))}
-        </ul>
-      </Alert.AlertDescription>
-    </Alert.Alert>
+    <div className="flex flex-row gap-2 text-red-600 items-center text-xs text-justify">
+      <div>
+        <AlertCircleIcon size={12} />
+      </div>
+      <p>{errors[0]?.message}</p>
+    </div>
   )
 }
