@@ -24,7 +24,7 @@ export function Header() {
   ]
 
   return (
-    <header className=" py-2 px-8 shadow-md sticky z-1">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-4">
       <nav className="flex items-center justify-between">
         <div className="flex items-center gap-16">
           <Link to="/">

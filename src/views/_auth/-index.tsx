@@ -58,11 +58,11 @@ function Header() {
           </div>
         </Link>
 
-        <nav className="hidden md:flex items-center space-x-6">
+        <Link to="/login">
           <Button variant="outline" className="p-6">
             Entrar
           </Button>
-        </nav>
+        </Link>
       </div>
     </header>
   )
@@ -223,11 +223,10 @@ function CoursesCarousel({ courses }: { courses: Course[] }) {
           {courses.map((_, index) => (
             <button
               key={index}
-              className={`h-2 w-2 rounded-full transition-all ${
-                index === currentIndex
+              className={`h-2 w-2 rounded-full transition-all ${index === currentIndex
                   ? 'bg-primary w-8'
                   : 'bg-muted-foreground/30'
-              }`}
+                }`}
               onClick={() => setCurrentIndex(index)}
             />
           ))}
