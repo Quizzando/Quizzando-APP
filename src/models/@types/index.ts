@@ -1,5 +1,9 @@
 import type { ComponentType } from 'react'
 
+export interface Auth {
+  user: User | null
+}
+
 export type User = {
   id?: string
 
@@ -17,20 +21,51 @@ export type Course = {
   id?: string
 
   name: string
-  icon?: ComponentType
-  theme?: string
-
-  backgroundImage?: string
   description?: string
-  category?: string
-  students?: number
-  duration?: string
+
+  backgroundImage: string
+  icon?: string | ComponentType
+
+  // MTEC - MÉDIO-TÉCNICO | MEDIO - ENSINO MÉDIO
+  category: 'mtec' | 'medio'
   rating?: number
+
+  disciplines: Discipline[]
 
   createdAt?: string
   updatedAt?: string
 }
 
-export interface Auth {
-  user: User | null
+export type Discipline = {
+  id?: string
+  courseId: string
+
+  name: string
+  description?: string
+
+  createdAt?: string
+  updatedAt?: string
+}
+
+export type Question = {
+  id?: string
+  disciplineId: string
+
+  statement: string
+  // 0 - fácil | 1- médio | 2 - difícil
+  difficulty: 0 | 1 | 2
+
+  createdAt?: string
+  updatedAt?: string
+}
+
+export type Answer = {
+  id?: string
+  questionId: string
+
+  statement: string
+  isCorrect: boolean
+
+  createdAt?: string
+  updatedAt?: string
 }
