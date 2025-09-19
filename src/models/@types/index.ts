@@ -42,6 +42,8 @@ export type Discipline = {
 
   name: string
   description?: string
+  // 0 - fácil | 1- médio | 2 - difícil
+  difficulty: 0 | 1 | 2
 
   createdAt?: string
   updatedAt?: string
