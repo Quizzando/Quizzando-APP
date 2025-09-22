@@ -15,7 +15,7 @@ import { Label } from '@/components/ui/label'
 import { createFileRoute } from '@tanstack/react-router'
 import { Edit } from 'lucide-react'
 
-export const Route = createFileRoute('/_app/profile')({
+export const Route = createFileRoute('/_app/perfil')({
   component: RouteComponent,
 })
 
