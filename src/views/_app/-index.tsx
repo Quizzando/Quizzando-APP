@@ -43,7 +43,7 @@ export function HomePage() {
                   }}
                   onMouseEnter={(e) => {
                     ;(e.currentTarget as HTMLElement).style.boxShadow =
-                      `0 2px 10px 1px ${c.theme}80`
+                      `0 2px 10px 1px 80`
                   }}
                   onMouseLeave={(e) => {
                     ;(e.currentTarget as HTMLElement).style.boxShadow =
@@ -51,7 +51,7 @@ export function HomePage() {
                   }}
                 >
                   <CardHeader className="flex justify-center text-4xl">
-                    {c.icon && <c.icon />}
+                    {c.icon as string}
                   </CardHeader>
                   <CardContent className="text-center font-medium">
                     {c.name}
