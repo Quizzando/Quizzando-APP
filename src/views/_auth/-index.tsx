@@ -1,5 +1,6 @@
 import { CourseCard } from '@/components/CourseCard'
 import { Footer } from '@/components/Footer/Footer'
+import { Header } from '@/components/Header'
 import { Button } from '@/components/ui/button'
 import { MOCK_COURSES } from '@/constants/mock'
 import type { Course } from '@/models/@types'
@@ -22,38 +23,6 @@ export function LandingPage() {
       <CoursesCarousel courses={MOCK_COURSES} />
       <Footer />
     </>
-  )
-}
-
-function Header() {
-  return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-4">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link
-          to="/"
-          className="flex items-center space-x-2 font-bold font-['Slackey'] text-background"
-        >
-          <div className="bg-chart-4 p-3 rounded-sm transition-transform hover:-translate-y-1">
-            QU
-          </div>
-          <div className="bg-chart-2 p-3 rounded-sm transition-transform hover:-translate-y-1">
-            IZZ
-          </div>
-          <div className="bg-chart-5 p-3 rounded-sm transition-transform hover:-translate-y-1">
-            AN
-          </div>
-          <div className="bg-chart-3 p-3 rounded-sm transition-transform hover:-translate-y-1">
-            DO
-          </div>
-        </Link>
-
-        <Link to="/login">
-          <Button variant="outline" className="p-6">
-            Entrar
-          </Button>
-        </Link>
-      </div>
-    </header>
   )
 }
 
@@ -212,10 +181,11 @@ function CoursesCarousel({ courses }: { courses: Course[] }) {
           {courses.map((_, index) => (
             <button
               key={index}
-              className={`h-2 w-2 rounded-full transition-all ${index === currentIndex
+              className={`h-2 w-2 rounded-full transition-all ${
+                index === currentIndex
                   ? 'bg-primary w-8'
                   : 'bg-muted-foreground/30'
-                }`}
+              }`}
               onClick={() => setCurrentIndex(index)}
             />
           ))}

@@ -7,7 +7,7 @@ import { useAuth } from '@/hooks/use-auth'
 import { Link } from '@tanstack/react-router'
 
 export function HomePage() {
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
 
   return (
     <>
@@ -29,8 +29,8 @@ export function HomePage() {
             {MOCK_COURSES.map((c) => (
               <Link
                 key={c.id}
-                to={'/curso/$id'}
-                params={{ id: c.id! }}
+                to={'/cursos/$courseId'}
+                params={{ courseId: c.id! }}
                 className="group"
               >
                 <Card

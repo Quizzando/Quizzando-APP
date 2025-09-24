@@ -7,6 +7,7 @@ import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 import type { QueryClient } from '@tanstack/react-query'
 import { ThemeProvider } from '@/controllers/theme-context'
 import type { AuthProviderState } from '@/controllers/auth-context'
+import { NotFound } from './-not-found'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -33,4 +34,5 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       </ThemeProvider>
     </>
   ),
+  notFoundComponent: () => <NotFound />,
 })

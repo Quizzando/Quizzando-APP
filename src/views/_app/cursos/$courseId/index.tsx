@@ -1,20 +1,20 @@
 import { MOCK_COURSES } from '@/constants/mock'
 import { createFileRoute } from '@tanstack/react-router'
-import { DisciplineCard } from './-components/discipline-card'
+import { DisciplineCard } from '../-components/discipline-card'
 import { Clock, PencilLine, Star, Users } from 'lucide-react'
-import { CourseSkeleton } from './-components/course-skeleton'
+import { CourseDetailsSkeleton } from '../-components/course-details-skeleton'
 
-export const Route = createFileRoute('/_app/curso/$id')({
-  loader: async ({ params: { id } }) => {
+export const Route = createFileRoute('/_app/cursos/$courseId/')({
+  loader: async ({ params: { courseId } }) => {
     // ... lógica de fetch do curso
 
-    const course = MOCK_COURSES.find((c) => c.id === id)!
+    const course = MOCK_COURSES.find((c) => c.id === courseId)!
 
     await new Promise((resolve) => setTimeout(resolve, 3000))
 
     return course
   },
-  pendingComponent: CourseSkeleton,
+  pendingComponent: CourseDetailsSkeleton,
   component: RouteComponent,
 })
 

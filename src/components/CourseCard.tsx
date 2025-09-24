@@ -1,11 +1,15 @@
 import { Card, CardContent } from '@/components/ui/card'
 import type { Course } from '@/models/@types/index'
-import { Clock, PencilLine, Star, Users } from 'lucide-react'
+import { Clock, PencilLine, Star } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 
 export function CourseCard({ course }: { course: Course }) {
   return (
-    <Link key={`${course.id}`} to={'/curso/$id'} params={{ id: course.id! }}>
+    <Link
+      key={`${course.id}`}
+      to={'/cursos/$courseId'}
+      params={{ courseId: course.id! }}
+    >
       <Card className="group cursor-pointer overflow-hidden border-0 bg-card shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2 pt-0">
         <div className="relative h-48 overflow-hidden">
           <img

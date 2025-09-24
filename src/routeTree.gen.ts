@@ -17,9 +17,9 @@ import { Route as AuthRegisterRouteImport } from './views/_auth/register'
 import { Route as AuthLoginRouteImport } from './views/_auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './views/_auth/forgot-password'
 import { Route as AppPerfilRouteImport } from './views/_app/perfil'
-import { Route as AppDashboardIndexRouteImport } from './views/_app/dashboard/index'
-import { Route as AppCursoIdRouteImport } from './views/_app/curso/$id'
-import { Route as AppCursoDisciplinaIdRouteImport } from './views/_app/curso/disciplina/$id'
+import { Route as AppCursosIndexRouteImport } from './views/_app/cursos/index'
+import { Route as AppCursosCourseIdIndexRouteImport } from './views/_app/cursos/$courseId/index'
+import { Route as AppCursosCourseIdDisciplinaDisciplineIdRouteImport } from './views/_app/cursos/$courseId/disciplina.$disciplineId'
 
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
@@ -59,21 +59,22 @@ const AppPerfilRoute = AppPerfilRouteImport.update({
   path: '/perfil',
   getParentRoute: () => AppRoute,
 } as any)
-const AppDashboardIndexRoute = AppDashboardIndexRouteImport.update({
-  id: '/dashboard/',
-  path: '/dashboard/',
+const AppCursosIndexRoute = AppCursosIndexRouteImport.update({
+  id: '/cursos/',
+  path: '/cursos/',
   getParentRoute: () => AppRoute,
 } as any)
-const AppCursoIdRoute = AppCursoIdRouteImport.update({
-  id: '/curso/$id',
-  path: '/curso/$id',
+const AppCursosCourseIdIndexRoute = AppCursosCourseIdIndexRouteImport.update({
+  id: '/cursos/$courseId/',
+  path: '/cursos/$courseId/',
   getParentRoute: () => AppRoute,
 } as any)
-const AppCursoDisciplinaIdRoute = AppCursoDisciplinaIdRouteImport.update({
-  id: '/curso/disciplina/$id',
-  path: '/curso/disciplina/$id',
-  getParentRoute: () => AppRoute,
-} as any)
+const AppCursosCourseIdDisciplinaDisciplineIdRoute =
+  AppCursosCourseIdDisciplinaDisciplineIdRouteImport.update({
+    id: '/cursos/$courseId/disciplina/$disciplineId',
+    path: '/cursos/$courseId/disciplina/$disciplineId',
+    getParentRoute: () => AppRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,9 +83,9 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
-  '/curso/$id': typeof AppCursoIdRoute
-  '/dashboard': typeof AppDashboardIndexRoute
-  '/curso/disciplina/$id': typeof AppCursoDisciplinaIdRoute
+  '/cursos': typeof AppCursosIndexRoute
+  '/cursos/$courseId': typeof AppCursosCourseIdIndexRoute
+  '/cursos/$courseId/disciplina/$disciplineId': typeof AppCursosCourseIdDisciplinaDisciplineIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -93,9 +94,9 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
-  '/curso/$id': typeof AppCursoIdRoute
-  '/dashboard': typeof AppDashboardIndexRoute
-  '/curso/disciplina/$id': typeof AppCursoDisciplinaIdRoute
+  '/cursos': typeof AppCursosIndexRoute
+  '/cursos/$courseId': typeof AppCursosCourseIdIndexRoute
+  '/cursos/$courseId/disciplina/$disciplineId': typeof AppCursosCourseIdDisciplinaDisciplineIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,9 +108,9 @@ export interface FileRoutesById {
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
-  '/_app/curso/$id': typeof AppCursoIdRoute
-  '/_app/dashboard/': typeof AppDashboardIndexRoute
-  '/_app/curso/disciplina/$id': typeof AppCursoDisciplinaIdRoute
+  '/_app/cursos/': typeof AppCursosIndexRoute
+  '/_app/cursos/$courseId/': typeof AppCursosCourseIdIndexRoute
+  '/_app/cursos/$courseId/disciplina/$disciplineId': typeof AppCursosCourseIdDisciplinaDisciplineIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -120,9 +121,9 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
-    | '/curso/$id'
-    | '/dashboard'
-    | '/curso/disciplina/$id'
+    | '/cursos'
+    | '/cursos/$courseId'
+    | '/cursos/$courseId/disciplina/$disciplineId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -131,9 +132,9 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
-    | '/curso/$id'
-    | '/dashboard'
-    | '/curso/disciplina/$id'
+    | '/cursos'
+    | '/cursos/$courseId'
+    | '/cursos/$courseId/disciplina/$disciplineId'
   id:
     | '__root__'
     | '/'
@@ -144,9 +145,9 @@ export interface FileRouteTypes {
     | '/_auth/forgot-password'
     | '/_auth/login'
     | '/_auth/register'
-    | '/_app/curso/$id'
-    | '/_app/dashboard/'
-    | '/_app/curso/disciplina/$id'
+    | '/_app/cursos/'
+    | '/_app/cursos/$courseId/'
+    | '/_app/cursos/$courseId/disciplina/$disciplineId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -214,25 +215,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPerfilRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/dashboard/': {
-      id: '/_app/dashboard/'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AppDashboardIndexRouteImport
+    '/_app/cursos/': {
+      id: '/_app/cursos/'
+      path: '/cursos'
+      fullPath: '/cursos'
+      preLoaderRoute: typeof AppCursosIndexRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/curso/$id': {
-      id: '/_app/curso/$id'
-      path: '/curso/$id'
-      fullPath: '/curso/$id'
-      preLoaderRoute: typeof AppCursoIdRouteImport
+    '/_app/cursos/$courseId/': {
+      id: '/_app/cursos/$courseId/'
+      path: '/cursos/$courseId'
+      fullPath: '/cursos/$courseId'
+      preLoaderRoute: typeof AppCursosCourseIdIndexRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/curso/disciplina/$id': {
-      id: '/_app/curso/disciplina/$id'
-      path: '/curso/disciplina/$id'
-      fullPath: '/curso/disciplina/$id'
-      preLoaderRoute: typeof AppCursoDisciplinaIdRouteImport
+    '/_app/cursos/$courseId/disciplina/$disciplineId': {
+      id: '/_app/cursos/$courseId/disciplina/$disciplineId'
+      path: '/cursos/$courseId/disciplina/$disciplineId'
+      fullPath: '/cursos/$courseId/disciplina/$disciplineId'
+      preLoaderRoute: typeof AppCursosCourseIdDisciplinaDisciplineIdRouteImport
       parentRoute: typeof AppRoute
     }
   }
@@ -240,16 +241,17 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppPerfilRoute: typeof AppPerfilRoute
-  AppCursoIdRoute: typeof AppCursoIdRoute
-  AppDashboardIndexRoute: typeof AppDashboardIndexRoute
-  AppCursoDisciplinaIdRoute: typeof AppCursoDisciplinaIdRoute
+  AppCursosIndexRoute: typeof AppCursosIndexRoute
+  AppCursosCourseIdIndexRoute: typeof AppCursosCourseIdIndexRoute
+  AppCursosCourseIdDisciplinaDisciplineIdRoute: typeof AppCursosCourseIdDisciplinaDisciplineIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppPerfilRoute: AppPerfilRoute,
-  AppCursoIdRoute: AppCursoIdRoute,
-  AppDashboardIndexRoute: AppDashboardIndexRoute,
-  AppCursoDisciplinaIdRoute: AppCursoDisciplinaIdRoute,
+  AppCursosIndexRoute: AppCursosIndexRoute,
+  AppCursosCourseIdIndexRoute: AppCursosCourseIdIndexRoute,
+  AppCursosCourseIdDisciplinaDisciplineIdRoute:
+    AppCursosCourseIdDisciplinaDisciplineIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
