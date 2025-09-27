@@ -82,9 +82,13 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
         setError(null)
 
         // === MOCKAGEM PARA TESTES === //
+        // setUser(MOCK_USER)
         const token = authService.getToken()
         if (token) {
-          setUser(MOCK_USER)
+          const { id } = authService.decryptToken(token)
+          const loggedUser = await authService.getUser(id)
+
+          setUser(loggedUser)
         } else {
           logout()
         }
@@ -106,41 +110,3 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
     </AuthProviderContext.Provider>
   )
 }
-
-/*
-const loadUser = async () => {
-      setIsLoading(true)
-      setError(null)
-
-      // 1. verifica se há algum token salvo no localStorage
-      const token = authService.getToken()
-      if (!token) {
-        setIsLoading(false)
-        return
-      }
-
-      try {
-        // 2. retorna o id salvo dentro do token
-        const { id } = authService.decryptToken(token) as { id: string }
-
-        // ... fazer a lógica de expiração do token / implementar estratégia de refresh
-
-        // 3. retorna usuário vinculado ao email
-        const user = await authService.getUser(id)
-
-        if (!user) {
-          setError('usuário não encontrado')
-          return
-        }
-
-        setUser(user)
-      } catch (error) {
-        console.error(error)
-        setError('Erro ao carregar usuário')
-        // logout()
-      } finally {
-        setIsLoading(false)
-      }
-    }
-    loadUser()
-*/

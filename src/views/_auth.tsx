@@ -1,8 +1,8 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_auth')({
-  beforeLoad: ({ context }) => {
-    if (context.auth.user) {
+  beforeLoad: () => {
+    if (localStorage.getItem('auth-token')) {
       throw redirect({
         to: '/',
       })

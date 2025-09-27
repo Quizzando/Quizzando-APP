@@ -12,7 +12,7 @@ export function HomePage() {
   return (
     <>
       <Header />
-      <div className="container max-w-5xl mx-auto min-h-screen space-y-10">
+      <div className="container max-w-5xl mx-auto min-h-screen space-y-10 py-6 ">
         <div>
           <h1 className="text-3xl font-bold">
             Olá, <span className="text-[#FF0080]">{user?.username}</span>!

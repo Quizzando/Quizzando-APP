@@ -10,6 +10,9 @@ export const Route = createFileRoute('/_auth/register')({
 })
 
 function RouteComponent() {
+  const { auth } = Route.useRouteContext()
+  const navigate = Route.useNavigate()
+
   const form = useForm({
     defaultValues: {
       username: '',
@@ -19,9 +22,8 @@ function RouteComponent() {
     },
     onSubmit: async ({ value }) => {
       try {
-        alert(
-          `Enviando Credenciais ${value.username} / ${value.email} / ${value.password}`,
-        )
+        await auth.register(value.username, value.email, value.password)
+        navigate({ to: '/' })
       } catch (error) {
       } finally {
         form.reset()
@@ -139,7 +141,11 @@ function RouteComponent() {
           )}
         />
 
-        <AuthRedirect message='Já possui uma conta?' linkText='Entre aqui' to='/login' />
+        <AuthRedirect
+          message="Já possui uma conta?"
+          linkText="Entre aqui"
+          to="/login"
+        />
       </form>
     </div>
   )

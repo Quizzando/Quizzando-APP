@@ -27,7 +27,9 @@ export const authService = {
 
     // ID do usuário está dentro deste claim:
     return {
-      id: payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'],
+      id: payload[
+        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'
+      ] as string,
     }
   },
   // === REGISTER FUNCTION === //
@@ -111,7 +113,7 @@ export const authService = {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       })
 

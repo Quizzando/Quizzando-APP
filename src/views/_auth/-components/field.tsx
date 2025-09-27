@@ -17,7 +17,6 @@ export const Field = ({ type, label, value, onChange, errors }: FieldProps) => {
 
   return (
     <div className="flex flex-col space-y-2">
-      {/* <Label htmlFor={label}>{label}</Label> */}
       <div className="relative">
         <Input
           type={

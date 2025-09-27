@@ -63,13 +63,15 @@ export function Header() {
         <div className="flex items-center gap-1">
           {user ? (
             <>
-              <Button
-                variant="default"
-                className="cursor-pointer hover:bg-accent"
-              >
-                <CirclePlus className="size-5" />
-                Crie um Quiz
-              </Button>
+              {user.admin && (
+                <Button
+                  variant="default"
+                  className="cursor-pointer hover:bg-accent"
+                >
+                  <CirclePlus className="size-5" />
+                  Crie um Quiz
+                </Button>
+              )}
               <UserMenu user={user} />
             </>
           ) : (
