@@ -18,6 +18,7 @@ import { Route as AuthLoginRouteImport } from './views/_auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './views/_auth/forgot-password'
 import { Route as AppPerfilRouteImport } from './views/_app/perfil'
 import { Route as AppCursosIndexRouteImport } from './views/_app/cursos/index'
+import { Route as AppCriarIndexRouteImport } from './views/_app/criar/index'
 import { Route as AppCursosCourseIdIndexRouteImport } from './views/_app/cursos/$courseId/index'
 import { Route as AppCursosCourseIdDisciplinaDisciplineIdRouteImport } from './views/_app/cursos/$courseId/disciplina.$disciplineId'
 
@@ -64,6 +65,11 @@ const AppCursosIndexRoute = AppCursosIndexRouteImport.update({
   path: '/cursos/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCriarIndexRoute = AppCriarIndexRouteImport.update({
+  id: '/criar/',
+  path: '/criar/',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCursosCourseIdIndexRoute = AppCursosCourseIdIndexRouteImport.update({
   id: '/cursos/$courseId/',
   path: '/cursos/$courseId/',
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
+  '/criar': typeof AppCriarIndexRoute
   '/cursos': typeof AppCursosIndexRoute
   '/cursos/$courseId': typeof AppCursosCourseIdIndexRoute
   '/cursos/$courseId/disciplina/$disciplineId': typeof AppCursosCourseIdDisciplinaDisciplineIdRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
+  '/criar': typeof AppCriarIndexRoute
   '/cursos': typeof AppCursosIndexRoute
   '/cursos/$courseId': typeof AppCursosCourseIdIndexRoute
   '/cursos/$courseId/disciplina/$disciplineId': typeof AppCursosCourseIdDisciplinaDisciplineIdRoute
@@ -108,6 +116,7 @@ export interface FileRoutesById {
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
+  '/_app/criar/': typeof AppCriarIndexRoute
   '/_app/cursos/': typeof AppCursosIndexRoute
   '/_app/cursos/$courseId/': typeof AppCursosCourseIdIndexRoute
   '/_app/cursos/$courseId/disciplina/$disciplineId': typeof AppCursosCourseIdDisciplinaDisciplineIdRoute
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/criar'
     | '/cursos'
     | '/cursos/$courseId'
     | '/cursos/$courseId/disciplina/$disciplineId'
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/criar'
     | '/cursos'
     | '/cursos/$courseId'
     | '/cursos/$courseId/disciplina/$disciplineId'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '/_auth/forgot-password'
     | '/_auth/login'
     | '/_auth/register'
+    | '/_app/criar/'
     | '/_app/cursos/'
     | '/_app/cursos/$courseId/'
     | '/_app/cursos/$courseId/disciplina/$disciplineId'
@@ -222,6 +234,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCursosIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/criar/': {
+      id: '/_app/criar/'
+      path: '/criar'
+      fullPath: '/criar'
+      preLoaderRoute: typeof AppCriarIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/cursos/$courseId/': {
       id: '/_app/cursos/$courseId/'
       path: '/cursos/$courseId'
@@ -241,6 +260,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppPerfilRoute: typeof AppPerfilRoute
+  AppCriarIndexRoute: typeof AppCriarIndexRoute
   AppCursosIndexRoute: typeof AppCursosIndexRoute
   AppCursosCourseIdIndexRoute: typeof AppCursosCourseIdIndexRoute
   AppCursosCourseIdDisciplinaDisciplineIdRoute: typeof AppCursosCourseIdDisciplinaDisciplineIdRoute
@@ -248,6 +268,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppPerfilRoute: AppPerfilRoute,
+  AppCriarIndexRoute: AppCriarIndexRoute,
   AppCursosIndexRoute: AppCursosIndexRoute,
   AppCursosCourseIdIndexRoute: AppCursosCourseIdIndexRoute,
   AppCursosCourseIdDisciplinaDisciplineIdRoute:
