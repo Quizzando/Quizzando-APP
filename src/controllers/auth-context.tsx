@@ -1,5 +1,6 @@
 import type { Auth } from '@/models/@types'
 import { authService } from '@/models/services/auth-service'
+import { decryptToken, getToken, setToken } from '@/utils/token'
 import { createContext, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -80,7 +81,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
 
   // === LOGOUT === //
   const logout = () => {
-    authService.setToken(null)
+    setToken(null)
     setUser(null)
     toast('Sessão encerrada', {
       description: 'Você saiu da sua conta com sucesso.',
@@ -94,9 +95,9 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
         setIsLoading(true)
         setError(null)
 
-        const token = authService.getToken()
+        const token = getToken()
         if (token) {
-          const { id } = authService.decryptToken(token)
+          const { id } = decryptToken(token)
           const loggedUser = await authService.getUser(id)
           setUser(loggedUser)
           toast.success('Sessão restaurada', {

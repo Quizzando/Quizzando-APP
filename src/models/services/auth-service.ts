@@ -1,33 +1,12 @@
-import { decodeJwt } from 'jose'
 import type { User } from '../@types'
 import type {
   LoginFormSchema,
   RegisterFormSchema,
 } from '@/models/schemas/auth-forms.schema'
 import { handleApiResponse } from '@/utils/handleApiResponse'
-
-const AUTH_TOKEN_KEY = 'auth-token'
+import { decryptToken, getToken, setToken } from '@/utils/token'
 
 export const authService = {
-  // === TOKEN HELPERS === //
-  setToken(token: string | null) {
-    if (token) localStorage.setItem(AUTH_TOKEN_KEY, token)
-    else localStorage.removeItem(AUTH_TOKEN_KEY)
-  },
-
-  getToken(): string | null {
-    return localStorage.getItem(AUTH_TOKEN_KEY)
-  },
-
-  decryptToken(token: string) {
-    const payload = decodeJwt(token)
-    return {
-      id: payload[
-        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'
-      ] as string,
-    }
-  },
-
   // === REGISTER === //
   async register({
     username,
@@ -61,8 +40,8 @@ export const authService = {
         }),
       )
 
-      this.setToken(token)
-      const { id } = this.decryptToken(token)
+      setToken(token)
+      const { id } = decryptToken(token)
       return await this.getUser(id)
     } catch (error) {
       console.error('Erro ao logar usuário:', error)
@@ -73,7 +52,7 @@ export const authService = {
   // === GET USER === //
   async getUser(id: string): Promise<User | null> {
     try {
-      const token = this.getToken()
+      const token = getToken()
       if (!token) throw new Error('Token não encontrado')
 
       return await handleApiResponse<User>(

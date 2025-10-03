@@ -1,10 +1,22 @@
 import { MOCK_QUESTIONS } from '@/constants/mock'
 import type { Quiz } from '@/models/@types'
 import { handleApiResponse } from '@/utils/handleApiResponse'
+import { getToken } from '@/utils/token'
 
 export const quizService = {
   async generateQuiz(disciplineId: string): Promise<Quiz | null> {
     try {
+      const token = getToken()
+
+      // const data = await handleApiResponse(
+      //   await fetch(`/api/question/discipline/${disciplineId}`, {
+      //     method: 'GET',
+      //     headers: { Authorization: `Bearer ${token}` },
+      //   }),
+      // )
+
+      // console.log(data)
+
       // === mockagem === //
       await new Promise((resolve) => setTimeout(resolve, 3000))
 
