@@ -1,7 +1,7 @@
-import { MOCK_USER } from '@/constants/mock'
 import type { Auth } from '@/models/@types'
 import { authService } from '@/models/services/auth-service'
 import { createContext, useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 export type AuthProviderState = Auth & {
   isLoading: boolean
@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState(initialState.isLoading)
   const [error, setError] = useState<string | null>(initialState.error)
 
+  // === REGISTER === //
   const register = async (
     username: string,
     email: string,
@@ -39,14 +40,22 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
 
       const newUser = await authService.register({ username, email, password })
       setUser(newUser)
-    } catch (error) {
-      console.error(error)
-      setError('Erro ao registrar usuário')
+      toast.success('Conta criada com sucesso!', {
+        description: `Bem-vindo(a), ${newUser?.username || 'usuário'}!`,
+      })
+    } catch (err: any) {
+      const message = err?.message || 'Erro ao registrar usuário.'
+      console.error(err)
+      setError(message)
+      toast.error('Falha ao registrar', {
+        description: message,
+      })
     } finally {
       setIsLoading(false)
     }
   }
 
+  // === LOGIN === //
   const login = async (email: string, password: string) => {
     try {
       setIsLoading(true)
@@ -54,47 +63,55 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
 
       const loggedUser = await authService.login({ email, password })
       setUser(loggedUser)
-
-      // === MOCKAGEM PARA TESTES =========================================== //
-      // 1. Simulação da API com atraso de 3 segundos
-      // await new Promise((resolve) => setTimeout(resolve, 3000))
-      // 2. retorno do token
-      // authService.setToken('token-100-por-cento-autentico-confia')
-      // 3. retorno do usuário mockado
-      // setUser(MOCK_USER)
-    } catch (error) {
-      console.error(error)
-      setError('Erro ao logar usuário')
+      toast.success('Login realizado com sucesso!', {
+        description: `Olá novamente, ${loggedUser?.username || 'usuário'} 👋`,
+      })
+    } catch (err: any) {
+      const message = err?.message || 'Erro ao logar usuário.'
+      console.error(err)
+      setError(message)
+      toast.error('Falha no login', {
+        description: message,
+      })
     } finally {
       setIsLoading(false)
     }
   }
 
+  // === LOGOUT === //
   const logout = () => {
     authService.setToken(null)
     setUser(null)
+    toast('Sessão encerrada', {
+      description: 'Você saiu da sua conta com sucesso.',
+    })
   }
 
+  // === LOAD USER ON STARTUP === //
   useEffect(() => {
     const loadUser = async () => {
       try {
         setIsLoading(true)
         setError(null)
 
-        // === MOCKAGEM PARA TESTES === //
-        // setUser(MOCK_USER)
         const token = authService.getToken()
         if (token) {
           const { id } = authService.decryptToken(token)
           const loggedUser = await authService.getUser(id)
-
           setUser(loggedUser)
+          toast.success('Sessão restaurada', {
+            description: `Bem-vindo de volta, ${loggedUser?.username || 'usuário'}!`,
+          })
         } else {
           logout()
         }
-      } catch (error) {
-        console.error(error)
-        setError('Erro ao carregar usuário')
+      } catch (err: any) {
+        const message = err?.message || 'Erro ao carregar usuário.'
+        console.error(err)
+        setError(message)
+        toast.error('Falha ao carregar sessão', {
+          description: message,
+        })
       } finally {
         setIsLoading(false)
       }

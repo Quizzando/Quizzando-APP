@@ -56,6 +56,7 @@ export type Question = {
   statement: string
   // 0 - fácil | 1- médio | 2 - difícil
   difficulty: 0 | 1 | 2
+  answers: Answer[]
 
   createdAt?: string
   updatedAt?: string
@@ -71,3 +72,5 @@ export type Answer = {
   createdAt?: string
   updatedAt?: string
 }
+
+export type Quiz = Discipline & { questions: Question[] }

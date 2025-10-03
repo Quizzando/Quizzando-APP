@@ -8,6 +8,7 @@ import type { QueryClient } from '@tanstack/react-query'
 import { ThemeProvider } from '@/controllers/theme-context'
 import type { AuthProviderState } from '@/controllers/auth-context'
 import { NotFound } from './-not-found'
+import { Toaster } from 'sonner'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -19,6 +20,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     <>
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
         <Outlet />
+        <Toaster />
         <TanstackDevtools
           config={{
             position: 'bottom-left',
