@@ -20,18 +20,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-// EXEMPLO
-// const frameworks = [
-//   {
-//     value: "next.js",
-//     label: "Next.js",
-//   },
-//   {
-//     value: "sveltekit",
-//     label: "SvelteKit",
-//   },
-// ]
-
 const courses = MOCK_COURSES.map((course) => {
     return {
         value: formatCourseName(course.name),
@@ -54,7 +42,7 @@ export function CoursePicker() {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[400px] justify-between"
+          className="w-full justify-between"
         >
           {value
             ? courses.find((course) => course.value === value)?.label
@@ -62,7 +50,7 @@ export function CoursePicker() {
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[400px] p-0">
+      <PopoverContent className="w-full p-0">
         <Command>
           <CommandInput placeholder="Search course..." className="h-9" />
           <CommandList>
