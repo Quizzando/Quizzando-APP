@@ -9,95 +9,52 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Plus, Trash2 } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import type { Answer, Question } from '@/models/@types'
 
-export const Route = createFileRoute('/_app/criar/')({
+type CreateAnswer = Omit<Answer, 'questionId'>
+type CreateQuestion = Omit<Question, 'disciplineId'>
+
+export const Route = createFileRoute('/_app/criar/disciplina')({
   component: RouteComponent,
 })
-
-interface Answer {
-  statement: string
-  isCorrect: boolean
-}
-
-interface Question {
-  statement: string
-  difficulty: 0 | 1 | 2
-  answers: Answer[]
-}
 
 interface QuizFormData {
   name: string
   description?: string
   courseId: string
-  difficulty: 0 | 1 | 2
-  questions: Question[]
+  questions: CreateQuestion[]
 }
 
 function RouteComponent() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [courseId, setCourseId] = useState('')
-  const [difficulty, setDifficulty] = useState<0 | 1 | 2>(0)
-  const [questions, setQuestions] = useState<Question[]>([
-    { 
-      statement: '', 
-      difficulty: 0, 
-      answers: [
-        { statement: '', isCorrect: true },
-        { statement: '', isCorrect: false },
-        { statement: '', isCorrect: false },
-        { statement: '', isCorrect: false },
-        { statement: '', isCorrect: false }
-      ] 
-    },
-    { 
-      statement: '', 
-      difficulty: 0, 
-      answers: [
-        { statement: '', isCorrect: true },
-        { statement: '', isCorrect: false },
-        { statement: '', isCorrect: false },
-        { statement: '', isCorrect: false },
-        { statement: '', isCorrect: false }
-      ] 
-    },
-    { 
-      statement: '', 
-      difficulty: 0, 
-      answers: [
-        { statement: '', isCorrect: true },
-        { statement: '', isCorrect: false },
-        { statement: '', isCorrect: false },
-        { statement: '', isCorrect: false },
-        { statement: '', isCorrect: false }
-      ] 
-    },
-    { 
-      statement: '', 
-      difficulty: 0, 
-      answers: [
-        { statement: '', isCorrect: true },
-        { statement: '', isCorrect: false },
-        { statement: '', isCorrect: false },
-        { statement: '', isCorrect: false },
-        { statement: '', isCorrect: false }
-      ] 
-    }
-  ])
+  // const [difficulty, setDifficulty] = useState<0 | 1 | 2>(0)
+
+  const emptyQuestion : CreateQuestion = {
+    questionStatement: '',
+    difficulty: 0,
+    answers: [
+      { answerText: '', isCorrect: true },
+      { answerText: '', isCorrect: false },
+      { answerText: '', isCorrect: false },
+      { answerText: '', isCorrect: false },
+      { answerText: '', isCorrect: false }
+    ] as CreateAnswer[]
+  }
+
+  const [questions, setQuestions] = useState<CreateQuestion[]>(
+    [
+      emptyQuestion,
+      emptyQuestion,
+      emptyQuestion,
+      emptyQuestion,
+    ]
+  )
 
   const addQuestion = () => {
     if (questions.length < 10) {
-      setQuestions([...questions, { 
-        statement: '', 
-        difficulty: 0, 
-        answers: [
-          { statement: '', isCorrect: true },
-          { statement: '', isCorrect: false },
-          { statement: '', isCorrect: false },
-          { statement: '', isCorrect: false },
-          { statement: '', isCorrect: false }
-        ] 
-      }])
+      setQuestions([...questions, emptyQuestion,])
     }
   }
 
@@ -110,7 +67,7 @@ function RouteComponent() {
 
   const updateQuestionStatement = (index: number, value: string) => {
     const newQuestions = [...questions]
-    newQuestions[index].statement = value
+    newQuestions[index].questionStatement = value
     setQuestions(newQuestions)
   }
 
@@ -122,7 +79,7 @@ function RouteComponent() {
 
   const updateAnswer = (questionIndex: number, answerIndex: number, value: string) => {
     const newQuestions = [...questions]
-    newQuestions[questionIndex].answers[answerIndex].statement = value
+    newQuestions[questionIndex].answers[answerIndex].answerText = value
     setQuestions(newQuestions)
   }
 
@@ -134,6 +91,10 @@ function RouteComponent() {
     setQuestions(newQuestions)
   }
 
+  const handleCourseIdChange = (value : string) => {
+    setCourseId(value)
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
@@ -141,7 +102,6 @@ function RouteComponent() {
       name,
       description,
       courseId,
-      difficulty,
       questions
     }
 
@@ -162,7 +122,7 @@ function RouteComponent() {
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label>Curso</Label>
-                <CoursePicker />
+                <CoursePicker value={courseId} onChange={handleCourseIdChange} />
               </div>
 
               <div className="space-y-2">
@@ -185,20 +145,6 @@ function RouteComponent() {
                   placeholder="Descreva o propósito do quiz"
                   rows={3}
                 />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Dificuldade do Quiz</Label>
-                <Select value={difficulty.toString()} onValueChange={(value) => setDifficulty(parseInt(value) as 0 | 1 | 2)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="0">Fácil</SelectItem>
-                    <SelectItem value="1">Médio</SelectItem>
-                    <SelectItem value="2">Difícil</SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
             </div>
 
@@ -224,7 +170,7 @@ function RouteComponent() {
                     <div className="space-y-2">
                       <Label>Enunciado da Questão</Label>
                       <Textarea
-                        value={question.statement}
+                        value={question.questionStatement}
                         onChange={(e) => updateQuestionStatement(questionIndex, e.target.value)}
                         placeholder="Digite o enunciado da questão"
                         required
@@ -258,7 +204,7 @@ function RouteComponent() {
                           <div key={answerIndex} className="flex items-center space-x-2">
                             <RadioGroupItem value={answerIndex.toString()} />
                             <Input
-                              value={answer.statement}
+                              value={answer.answerText}
                               onChange={(e) => updateAnswer(questionIndex, answerIndex, e.target.value)}
                               placeholder={`Alternativa ${answerIndex + 1}`}
                               className="flex-1"

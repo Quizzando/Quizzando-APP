@@ -42,8 +42,6 @@ export type Discipline = {
 
   name: string
   description?: string
-  // 0 - fácil | 1- médio | 2 - difícil
-  difficulty: 0 | 1 | 2
 
   createdAt?: string
   updatedAt?: string
@@ -53,7 +51,7 @@ export type Question = {
   id?: string
   disciplineId: string
 
-  statement: string
+  questionStatement: string
   // 0 - fácil | 1- médio | 2 - difícil
   difficulty: 0 | 1 | 2
   answers: Answer[]
@@ -66,7 +64,7 @@ export type Answer = {
   id?: string
   questionId: string
 
-  statement: string
+  answerText: string
   isCorrect: boolean
 
   createdAt?: string

@@ -1,9 +1,6 @@
-"use client"
-
 import * as React from "react"
 import { Check, ChevronsUpDown } from "lucide-react"
 import { MOCK_COURSES } from "@/constants/mock"
-
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -21,19 +18,24 @@ import {
 } from "@/components/ui/popover"
 
 const courses = MOCK_COURSES.map((course) => {
-    return {
-        value: formatCourseName(course.name),
-        label: course.name,
-    }
+  return {
+    id: course.id,
+    value: formatCourseName(course.name),
+    label: course.name,
+  }
 })
 
 function formatCourseName(courseName: string): string {
-    return courseName.toLowerCase().replace(/\s+/g, '');
-}  
+  return courseName.toLowerCase().replace(/\s+/g, '')
+}
 
-export function CoursePicker() {
+interface CoursePickerProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+export function CoursePicker({ value, onChange }: CoursePickerProps) {
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -44,9 +46,11 @@ export function CoursePicker() {
           aria-expanded={open}
           className="w-full justify-between"
         >
-          {value
-            ? courses.find((course) => course.value === value)?.label
-            : "Selecione o curso..."}
+          {
+            value
+              ? courses.find((course) => course.id === value)?.label
+              : "Selecione o curso..."
+          }
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -58,10 +62,11 @@ export function CoursePicker() {
             <CommandGroup>
               {courses.map((course) => (
                 <CommandItem
-                  key={course.value}
-                  value={course.value}
+                  key={course.id}
+                  value={course.id}
                   onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue)
+                    const newValue = currentValue === value ? "" : currentValue
+                    onChange(newValue)
                     setOpen(false)
                   }}
                 >
@@ -69,7 +74,7 @@ export function CoursePicker() {
                   <Check
                     className={cn(
                       "ml-auto",
-                      value === course.value ? "opacity-100" : "opacity-0"
+                      value === course.id ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>
