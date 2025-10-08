@@ -28,19 +28,19 @@ function RouteComponent() {
         <div className="relative max-w-1/2">
           <img
             src={course.backgroundImage}
-            alt={course.name}
+            alt={course.courseName}
             className="rounded-xl"
           />
           <span
             className="absolute top-2 right-2 bg-primary border-2 border-accent 
           text-primary-foreground px-4 py-1 text-xs rounded-full"
           >
-            Ensino {course.category === 'mtec' ? 'Técnico' : 'Médio'}
+            Ensino {course.category === 0 ? 'Técnico' : 'Médio'}
           </span>
         </div>
         <div className="flex flex-col max-w-1/2 space-y-6">
           <div>
-            <h3 className="text-4xl font-semibold">{course.name}</h3>
+            <h3 className="text-4xl font-semibold">{course.courseName}</h3>
             <div className="flex items-center">
               <Star className="mr-1 h-3 w-3 fill-yellow-400 text-yellow-400" />
               {course.rating}

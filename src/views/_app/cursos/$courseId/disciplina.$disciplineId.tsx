@@ -38,7 +38,7 @@ const QuizWrapper = () => {
       <QuestionBox
         key={question.id}
         question={question}
-        disciplineName={quiz.name}
+        disciplineName={quiz.disciplineName}
       />
     </div>
   )

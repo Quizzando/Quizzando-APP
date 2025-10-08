@@ -6,14 +6,14 @@ import { shuffleArray } from '@/utils/shuffleArray'
 import { useQuiz } from '@/hooks/use-quiz'
 
 interface QuestionProps {
-  question: Question
+  question: Question & { answers: Answer[] }
   disciplineName?: string
 }
 
 export const QuestionBox = ({ question, disciplineName }: QuestionProps) => {
   const { handleAnswer } = useQuiz()
 
-  const { statement, difficulty, answers } = question
+  const { questionStatement, difficulty, answers } = question
   const [shuffledAnswers] = useState(shuffleArray(answers))
 
   const [excludedAnswers, setExcludedAnswers] = useState<string[]>([])
@@ -70,7 +70,7 @@ export const QuestionBox = ({ question, disciplineName }: QuestionProps) => {
       </h1>
 
       <div className="w-full p-8 bg-card rounded-xl flex flex-col space-y-12">
-        <h3 className="self-center text-justify">{statement}</h3>
+        <h3 className="self-center text-justify">{questionStatement}</h3>
 
         <ul className="space-y-4">
           {shuffledAnswers.map((a, i) => {
@@ -106,7 +106,7 @@ export const QuestionBox = ({ question, disciplineName }: QuestionProps) => {
                     isExcluded && 'line-through decoration-red-500 opacity-60'
                   } text-justify w-full mx-5`}
                 >
-                  {a.statement}
+                  {a.answerText}
                 </p>
                 <button
                   type="button"

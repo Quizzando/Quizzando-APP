@@ -23,8 +23,8 @@ export const quizService = {
       return {
         id: disciplineId,
         courseId: '1a2b3c',
-        name: 'Desenvolvimento de Sistemas',
-        difficulty: 0,
+        disciplineName: 'Desenvolvimento de Sistemas',
+        description: 'asdasdasdasdasdasd',
         questions: MOCK_QUESTIONS,
       } as Quiz
     } catch (error) {

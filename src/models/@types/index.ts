@@ -20,14 +20,14 @@ export type User = {
 export type Course = {
   id?: string
 
-  name: string
-  description?: string
+  courseName: string
+  description: string
 
   backgroundImage: string
   icon?: string | ComponentType
 
-  // MTEC - MÉDIO-TÉCNICO | MEDIO - ENSINO MÉDIO
-  category: 'mtec' | 'medio'
+  // 0 - MÉDIO-TÉCNICO | 1 - ENSINO MÉDIO
+  category: 0 | 1
   rating?: number
 
   disciplines: Discipline[]
@@ -40,8 +40,8 @@ export type Discipline = {
   id?: string
   courseId: string
 
-  name: string
-  description?: string
+  disciplineName: string
+  description: string
 
   createdAt?: string
   updatedAt?: string
@@ -54,7 +54,6 @@ export type Question = {
   questionStatement: string
   // 0 - fácil | 1- médio | 2 - difícil
   difficulty: 0 | 1 | 2
-  answers: Answer[]
 
   createdAt?: string
   updatedAt?: string
@@ -71,4 +70,6 @@ export type Answer = {
   updatedAt?: string
 }
 
-export type Quiz = Discipline & { questions: Question[] }
+export type Quiz = Discipline & {
+  questions: (Question & { answers: Answer[] })[]
+}

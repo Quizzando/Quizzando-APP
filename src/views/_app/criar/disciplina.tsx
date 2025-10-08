@@ -1,14 +1,20 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { CoursePicker } from './-components/course-picker'
 import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Plus, Trash2 } from 'lucide-react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import type { Answer, Question } from '@/models/@types'
 
 type CreateAnswer = Omit<Answer, 'questionId'>
@@ -31,7 +37,7 @@ function RouteComponent() {
   const [courseId, setCourseId] = useState('')
   // const [difficulty, setDifficulty] = useState<0 | 1 | 2>(0)
 
-  const emptyQuestion : CreateQuestion = {
+  const emptyQuestion: CreateQuestion & { answers: CreateAnswer[] } = {
     questionStatement: '',
     difficulty: 0,
     answers: [
@@ -39,22 +45,20 @@ function RouteComponent() {
       { answerText: '', isCorrect: false },
       { answerText: '', isCorrect: false },
       { answerText: '', isCorrect: false },
-      { answerText: '', isCorrect: false }
-    ] as CreateAnswer[]
+      { answerText: '', isCorrect: false },
+    ],
   }
 
-  const [questions, setQuestions] = useState<CreateQuestion[]>(
-    [
-      emptyQuestion,
-      emptyQuestion,
-      emptyQuestion,
-      emptyQuestion,
-    ]
-  )
+  const [questions, setQuestions] = useState<CreateQuestion[]>([
+    emptyQuestion,
+    emptyQuestion,
+    emptyQuestion,
+    emptyQuestion,
+  ])
 
   const addQuestion = () => {
     if (questions.length < 10) {
-      setQuestions([...questions, emptyQuestion,])
+      setQuestions([...questions, emptyQuestion])
     }
   }
 
@@ -77,7 +81,11 @@ function RouteComponent() {
     setQuestions(newQuestions)
   }
 
-  const updateAnswer = (questionIndex: number, answerIndex: number, value: string) => {
+  const updateAnswer = (
+    questionIndex: number,
+    answerIndex: number,
+    value: string,
+  ) => {
     const newQuestions = [...questions]
     newQuestions[questionIndex].answers[answerIndex].answerText = value
     setQuestions(newQuestions)
@@ -91,18 +99,18 @@ function RouteComponent() {
     setQuestions(newQuestions)
   }
 
-  const handleCourseIdChange = (value : string) => {
+  const handleCourseIdChange = (value: string) => {
     setCourseId(value)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     const quizData: QuizFormData = {
       name,
       description,
       courseId,
-      questions
+      questions,
     }
 
     // Depois implementar a lógica para enviar os dados para o backend
@@ -110,7 +118,7 @@ function RouteComponent() {
   }
 
   return (
-    <div className='flex items-center flex-col py-8 px-4'>
+    <div className="flex items-center flex-col py-8 px-4">
       <Card className="w-full max-w-3xl">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">
@@ -122,7 +130,10 @@ function RouteComponent() {
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label>Curso</Label>
-                <CoursePicker value={courseId} onChange={handleCourseIdChange} />
+                <CoursePicker
+                  value={courseId}
+                  onChange={handleCourseIdChange}
+                />
               </div>
 
               <div className="space-y-2">
@@ -171,7 +182,9 @@ function RouteComponent() {
                       <Label>Enunciado da Questão</Label>
                       <Textarea
                         value={question.questionStatement}
-                        onChange={(e) => updateQuestionStatement(questionIndex, e.target.value)}
+                        onChange={(e) =>
+                          updateQuestionStatement(questionIndex, e.target.value)
+                        }
                         placeholder="Digite o enunciado da questão"
                         required
                       />
@@ -179,9 +192,14 @@ function RouteComponent() {
 
                     <div className="space-y-2">
                       <Label>Dificuldade da Questão</Label>
-                      <Select 
-                        value={question.difficulty.toString()} 
-                        onValueChange={(value) => updateQuestionDifficulty(questionIndex, parseInt(value) as 0 | 1 | 2)}
+                      <Select
+                        value={question.difficulty.toString()}
+                        onValueChange={(value) =>
+                          updateQuestionDifficulty(
+                            questionIndex,
+                            parseInt(value) as 0 | 1 | 2,
+                          )
+                        }
                       >
                         <SelectTrigger>
                           <SelectValue />
@@ -197,15 +215,28 @@ function RouteComponent() {
                     <div className="space-y-3">
                       <Label>Alternativas</Label>
                       <RadioGroup
-                        value={question.answers.findIndex(answer => answer.isCorrect).toString()}
-                        onValueChange={(value) => updateCorrectAnswer(questionIndex, parseInt(value))}
+                        value={question.answers
+                          .findIndex((answer) => answer.isCorrect)
+                          .toString()}
+                        onValueChange={(value) =>
+                          updateCorrectAnswer(questionIndex, parseInt(value))
+                        }
                       >
                         {question.answers.map((answer, answerIndex) => (
-                          <div key={answerIndex} className="flex items-center space-x-2">
+                          <div
+                            key={answerIndex}
+                            className="flex items-center space-x-2"
+                          >
                             <RadioGroupItem value={answerIndex.toString()} />
                             <Input
                               value={answer.answerText}
-                              onChange={(e) => updateAnswer(questionIndex, answerIndex, e.target.value)}
+                              onChange={(e) =>
+                                updateAnswer(
+                                  questionIndex,
+                                  answerIndex,
+                                  e.target.value,
+                                )
+                              }
                               placeholder={`Alternativa ${answerIndex + 1}`}
                               className="flex-1"
                               required

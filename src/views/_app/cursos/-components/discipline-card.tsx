@@ -40,7 +40,7 @@ export function DisciplineCard({ discipline }: DisciplineCardProps) {
           </div>
 
           <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
-            {discipline.name}
+            {discipline.disciplineName}
           </h3>
 
           <p className="text-muted-foreground text-sm mb-4 line-clamp-2">

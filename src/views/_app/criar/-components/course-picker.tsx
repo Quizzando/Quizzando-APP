@@ -1,8 +1,8 @@
-import * as React from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
-import { MOCK_COURSES } from "@/constants/mock"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import * as React from 'react'
+import { Check, ChevronsUpDown } from 'lucide-react'
+import { MOCK_COURSES } from '@/constants/mock'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
 import {
   Command,
   CommandEmpty,
@@ -10,18 +10,18 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command"
+} from '@/components/ui/command'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from '@/components/ui/popover'
 
 const courses = MOCK_COURSES.map((course) => {
   return {
     id: course.id,
-    value: formatCourseName(course.name),
-    label: course.name,
+    value: formatCourseName(course.courseName),
+    label: course.courseName,
   }
 })
 
@@ -30,8 +30,8 @@ function formatCourseName(courseName: string): string {
 }
 
 interface CoursePickerProps {
-  value: string;
-  onChange: (value: string) => void;
+  value: string
+  onChange: (value: string) => void
 }
 
 export function CoursePicker({ value, onChange }: CoursePickerProps) {
@@ -46,11 +46,9 @@ export function CoursePicker({ value, onChange }: CoursePickerProps) {
           aria-expanded={open}
           className="w-full justify-between"
         >
-          {
-            value
-              ? courses.find((course) => course.id === value)?.label
-              : "Selecione o curso..."
-          }
+          {value
+            ? courses.find((course) => course.id === value)?.label
+            : 'Selecione o curso...'}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -65,7 +63,7 @@ export function CoursePicker({ value, onChange }: CoursePickerProps) {
                   key={course.id}
                   value={course.id}
                   onSelect={(currentValue) => {
-                    const newValue = currentValue === value ? "" : currentValue
+                    const newValue = currentValue === value ? '' : currentValue
                     onChange(newValue)
                     setOpen(false)
                   }}
@@ -73,8 +71,8 @@ export function CoursePicker({ value, onChange }: CoursePickerProps) {
                   {course.label}
                   <Check
                     className={cn(
-                      "ml-auto",
-                      value === course.id ? "opacity-100" : "opacity-0"
+                      'ml-auto',
+                      value === course.id ? 'opacity-100' : 'opacity-0',
                     )}
                   />
                 </CommandItem>

@@ -54,7 +54,7 @@ export function HomePage() {
                     {c.icon as string}
                   </CardHeader>
                   <CardContent className="text-center font-medium">
-                    {c.name}
+                    {c.courseName}
                   </CardContent>
                 </Card>
               </Link>

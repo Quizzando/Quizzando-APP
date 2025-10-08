@@ -3,14 +3,17 @@ import { createFileRoute } from '@tanstack/react-router'
 import { CourseSkeleton } from './-components/course-skeleton'
 import { CourseCard } from '@/components/CourseCard'
 import { BookOpen } from 'lucide-react'
+import type { Course } from '@/models/@types'
 
 export const Route = createFileRoute('/_app/cursos/')({
   loader: async () => {
     // ... lógica de fetch dos cursos
 
-    const courses = MOCK_COURSES
+    // const courses = MOCK_COURSES
 
-    await new Promise((resolve) => setTimeout(resolve, 3000))
+    const response = await fetch('/api/course')
+    const { courses } = await response.json()
+    console.log(courses)
 
     return courses
   },
@@ -19,7 +22,9 @@ export const Route = createFileRoute('/_app/cursos/')({
 })
 
 function RouteComponent() {
-  const courses = Route.useLoaderData()
+  const courses: Course[] = Route.useLoaderData()
+
+  if (!courses) return <div>Loading...</div>
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
@@ -46,7 +51,7 @@ function RouteComponent() {
           Cursos do Ensino Técnico
         </h1>
         {courses
-          .filter((c) => c.category === 'mtec')
+          .filter((c) => c.category === 0)
           .map((c) => (
             <CourseCard key={c.id} course={c} />
           ))}
@@ -56,7 +61,7 @@ function RouteComponent() {
           Cursos do Ensino Médio
         </h1>
         {courses
-          .filter((c) => c.category === 'medio')
+          .filter((c) => c.category === 1)
           .map((c) => (
             <CourseCard key={c.id} course={c} />
           ))}

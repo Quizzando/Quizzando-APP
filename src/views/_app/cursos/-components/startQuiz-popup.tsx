@@ -43,7 +43,7 @@ export function StartQuizPopup({
               <DialogDescription className="text-base leading-relaxed pt-2">
                 Ao clicar em prosseguir você estará iniciando um quiz sobre{' '}
                 <span className="font-semibold text-foreground">
-                  {discipline.name}
+                  {discipline.disciplineName}
                 </span>
                 . Após o início, você não poderá deixar o quiz até terminá-lo.
               </DialogDescription>
