@@ -25,7 +25,7 @@ export const Route = createFileRoute('/_app/criar/disciplina')({
   component: RouteComponent,
 })
 
-interface QuizFormData {
+export type QuizFormData = {
   name: string
   description?: string
   courseId: string
