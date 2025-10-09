@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { FormCard } from './-components/form-card'
 import { CoursePicker } from './-components/course-picker'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
@@ -119,157 +120,148 @@ function RouteComponent() {
 
   return (
     <div className="flex items-center flex-col py-8 px-4">
-      <Card className="w-full max-w-3xl">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">
-            Criar Novo Quiz
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label>Curso</Label>
-                <CoursePicker
-                  value={courseId}
-                  onChange={handleCourseIdChange}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="name">Nome do Quiz</Label>
-                <Input
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Digite o nome do quiz"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="description">Descrição</Label>
-                <Textarea
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Descreva o propósito do quiz"
-                  rows={3}
-                />
-              </div>
+      <FormCard formTitle='Criar novo Quiz'>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>Curso</Label>
+              <CoursePicker
+                value={courseId}
+                onChange={handleCourseIdChange}
+              />
             </div>
 
-            <div className="space-y-6">
-              {questions.map((question, questionIndex) => (
-                <Card key={questionIndex}>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-                    <CardTitle className="text-lg">
-                      Questão {questionIndex + 1}
-                    </CardTitle>
-                    {questions.length > 4 && (
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => removeQuestion(questionIndex)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <Label>Enunciado da Questão</Label>
-                      <Textarea
-                        value={question.questionStatement}
-                        onChange={(e) =>
-                          updateQuestionStatement(questionIndex, e.target.value)
-                        }
-                        placeholder="Digite o enunciado da questão"
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label>Dificuldade da Questão</Label>
-                      <Select
-                        value={question.difficulty.toString()}
-                        onValueChange={(value) =>
-                          updateQuestionDifficulty(
-                            questionIndex,
-                            parseInt(value) as 0 | 1 | 2,
-                          )
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="0">Fácil</SelectItem>
-                          <SelectItem value="1">Médio</SelectItem>
-                          <SelectItem value="2">Difícil</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-3">
-                      <Label>Alternativas</Label>
-                      <RadioGroup
-                        value={question.answers
-                          .findIndex((answer) => answer.isCorrect)
-                          .toString()}
-                        onValueChange={(value) =>
-                          updateCorrectAnswer(questionIndex, parseInt(value))
-                        }
-                      >
-                        {question.answers.map((answer, answerIndex) => (
-                          <div
-                            key={answerIndex}
-                            className="flex items-center space-x-2"
-                          >
-                            <RadioGroupItem value={answerIndex.toString()} />
-                            <Input
-                              value={answer.answerText}
-                              onChange={(e) =>
-                                updateAnswer(
-                                  questionIndex,
-                                  answerIndex,
-                                  e.target.value,
-                                )
-                              }
-                              placeholder={`Alternativa ${answerIndex + 1}`}
-                              className="flex-1"
-                              required
-                            />
-                          </div>
-                        ))}
-                      </RadioGroup>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="space-y-2">
+              <Label htmlFor="name">Nome do Quiz</Label>
+              <Input
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Digite o nome do quiz"
+                required
+              />
             </div>
 
-            {/* Botão para Adicionar Questões */}
-            {questions.length < 10 && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={addQuestion}
-                className="w-full"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Adicionar Questão
-              </Button>
-            )}
+            <div className="space-y-2">
+              <Label htmlFor="description">Descrição</Label>
+              <Textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Descreva o propósito do quiz"
+                rows={3}
+              />
+            </div>
+          </div>
 
-            {/* Botão de Submit */}
-            <Button type="submit" className="w-full">
-              Criar Quiz
+          <div className="space-y-6">
+            {questions.map((question, questionIndex) => (
+              <Card key={questionIndex}>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+                  <CardTitle className="text-lg">
+                    Questão {questionIndex + 1}
+                  </CardTitle>
+                  {questions.length > 4 && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => removeQuestion(questionIndex)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  )}
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Enunciado da Questão</Label>
+                    <Textarea
+                      value={question.questionStatement}
+                      onChange={(e) =>
+                        updateQuestionStatement(questionIndex, e.target.value)
+                      }
+                      placeholder="Digite o enunciado da questão"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Dificuldade da Questão</Label>
+                    <Select
+                      value={question.difficulty.toString()}
+                      onValueChange={(value) =>
+                        updateQuestionDifficulty(
+                          questionIndex,
+                          parseInt(value) as 0 | 1 | 2,
+                        )
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="0">Fácil</SelectItem>
+                        <SelectItem value="1">Médio</SelectItem>
+                        <SelectItem value="2">Difícil</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label>Alternativas</Label>
+                    <RadioGroup
+                      value={question.answers
+                        .findIndex((answer) => answer.isCorrect)
+                        .toString()}
+                      onValueChange={(value) =>
+                        updateCorrectAnswer(questionIndex, parseInt(value))
+                      }
+                    >
+                      {question.answers.map((answer, answerIndex) => (
+                        <div
+                          key={answerIndex}
+                          className="flex items-center space-x-2"
+                        >
+                          <RadioGroupItem value={answerIndex.toString()} />
+                          <Input
+                            value={answer.answerText}
+                            onChange={(e) =>
+                              updateAnswer(
+                                questionIndex,
+                                answerIndex,
+                                e.target.value,
+                              )
+                            }
+                            placeholder={`Alternativa ${answerIndex + 1}`}
+                            className="flex-1"
+                            required
+                          />
+                        </div>
+                      ))}
+                    </RadioGroup>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {questions.length < 10 && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={addQuestion}
+              className="w-full"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Adicionar Questão
             </Button>
-          </form>
-        </CardContent>
-      </Card>
+          )}
+
+          <Button type="submit" className="w-full">
+            Criar Quiz
+          </Button>
+        </form>
+      </FormCard>
     </div>
   )
 }
