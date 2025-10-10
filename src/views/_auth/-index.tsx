@@ -1,5 +1,5 @@
 import { CourseCard } from '@/components/CourseCard'
-import { Footer } from '@/components/Footer/Footer'
+import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { Button } from '@/components/ui/button'
 import { MOCK_COURSES } from '@/constants/mock'

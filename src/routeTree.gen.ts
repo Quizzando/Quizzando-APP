@@ -17,6 +17,7 @@ import { Route as AuthRegisterRouteImport } from './views/_auth/register'
 import { Route as AuthLoginRouteImport } from './views/_auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './views/_auth/forgot-password'
 import { Route as AppPerfilRouteImport } from './views/_app/perfil'
+import { Route as AppRankIndexRouteImport } from './views/_app/rank/index'
 import { Route as AppCursosIndexRouteImport } from './views/_app/cursos/index'
 import { Route as AppCriarDisciplinaRouteImport } from './views/_app/criar/disciplina'
 import { Route as AppCriarCursoRouteImport } from './views/_app/criar/curso'
@@ -61,6 +62,11 @@ const AppPerfilRoute = AppPerfilRouteImport.update({
   path: '/perfil',
   getParentRoute: () => AppRoute,
 } as any)
+const AppRankIndexRoute = AppRankIndexRouteImport.update({
+  id: '/rank/',
+  path: '/rank/',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCursosIndexRoute = AppCursosIndexRouteImport.update({
   id: '/cursos/',
   path: '/cursos/',
@@ -98,6 +104,7 @@ export interface FileRoutesByFullPath {
   '/criar/curso': typeof AppCriarCursoRoute
   '/criar/disciplina': typeof AppCriarDisciplinaRoute
   '/cursos': typeof AppCursosIndexRoute
+  '/rank': typeof AppRankIndexRoute
   '/cursos/$courseId': typeof AppCursosCourseIdIndexRoute
   '/cursos/$courseId/disciplina/$disciplineId': typeof AppCursosCourseIdDisciplinaDisciplineIdRoute
 }
@@ -111,6 +118,7 @@ export interface FileRoutesByTo {
   '/criar/curso': typeof AppCriarCursoRoute
   '/criar/disciplina': typeof AppCriarDisciplinaRoute
   '/cursos': typeof AppCursosIndexRoute
+  '/rank': typeof AppRankIndexRoute
   '/cursos/$courseId': typeof AppCursosCourseIdIndexRoute
   '/cursos/$courseId/disciplina/$disciplineId': typeof AppCursosCourseIdDisciplinaDisciplineIdRoute
 }
@@ -127,6 +135,7 @@ export interface FileRoutesById {
   '/_app/criar/curso': typeof AppCriarCursoRoute
   '/_app/criar/disciplina': typeof AppCriarDisciplinaRoute
   '/_app/cursos/': typeof AppCursosIndexRoute
+  '/_app/rank/': typeof AppRankIndexRoute
   '/_app/cursos/$courseId/': typeof AppCursosCourseIdIndexRoute
   '/_app/cursos/$courseId/disciplina/$disciplineId': typeof AppCursosCourseIdDisciplinaDisciplineIdRoute
 }
@@ -142,6 +151,7 @@ export interface FileRouteTypes {
     | '/criar/curso'
     | '/criar/disciplina'
     | '/cursos'
+    | '/rank'
     | '/cursos/$courseId'
     | '/cursos/$courseId/disciplina/$disciplineId'
   fileRoutesByTo: FileRoutesByTo
@@ -155,6 +165,7 @@ export interface FileRouteTypes {
     | '/criar/curso'
     | '/criar/disciplina'
     | '/cursos'
+    | '/rank'
     | '/cursos/$courseId'
     | '/cursos/$courseId/disciplina/$disciplineId'
   id:
@@ -170,6 +181,7 @@ export interface FileRouteTypes {
     | '/_app/criar/curso'
     | '/_app/criar/disciplina'
     | '/_app/cursos/'
+    | '/_app/rank/'
     | '/_app/cursos/$courseId/'
     | '/_app/cursos/$courseId/disciplina/$disciplineId'
   fileRoutesById: FileRoutesById
@@ -239,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPerfilRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/rank/': {
+      id: '/_app/rank/'
+      path: '/rank'
+      fullPath: '/rank'
+      preLoaderRoute: typeof AppRankIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/cursos/': {
       id: '/_app/cursos/'
       path: '/cursos'
@@ -282,6 +301,7 @@ interface AppRouteChildren {
   AppCriarCursoRoute: typeof AppCriarCursoRoute
   AppCriarDisciplinaRoute: typeof AppCriarDisciplinaRoute
   AppCursosIndexRoute: typeof AppCursosIndexRoute
+  AppRankIndexRoute: typeof AppRankIndexRoute
   AppCursosCourseIdIndexRoute: typeof AppCursosCourseIdIndexRoute
   AppCursosCourseIdDisciplinaDisciplineIdRoute: typeof AppCursosCourseIdDisciplinaDisciplineIdRoute
 }
@@ -291,6 +311,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppCriarCursoRoute: AppCriarCursoRoute,
   AppCriarDisciplinaRoute: AppCriarDisciplinaRoute,
   AppCursosIndexRoute: AppCursosIndexRoute,
+  AppRankIndexRoute: AppRankIndexRoute,
   AppCursosCourseIdIndexRoute: AppCursosCourseIdIndexRoute,
   AppCursosCourseIdDisciplinaDisciplineIdRoute:
     AppCursosCourseIdDisciplinaDisciplineIdRoute,

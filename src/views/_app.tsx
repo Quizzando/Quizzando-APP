@@ -1,4 +1,4 @@
-import { Footer } from '@/components/Footer/Footer'
+import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
