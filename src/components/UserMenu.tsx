@@ -1,4 +1,4 @@
-import type { User } from '@/models/@types'
+import type { User } from '@/@types'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import {
   DropdownMenu,
@@ -12,7 +12,7 @@ import {
 } from './ui/dropdown-menu'
 import { Settings, Home, LogOut, Plus, User2 } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
-import { useAuth } from '@/hooks/use-auth'
+import { useAuth } from '@/hooks/useAuth'
 
 interface UserMenuProps {
   user: User

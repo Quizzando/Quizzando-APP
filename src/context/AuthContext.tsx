@@ -1,5 +1,5 @@
-import type { Auth } from '@/models/@types'
-import { authService } from '@/models/services/auth-service'
+import type { Auth } from '@/@types'
+import { authService } from '@/models/services/AuthService'
 import { decryptToken, getToken, setToken } from '@/utils/token'
 import { createContext, useEffect, useState } from 'react'
 import { toast } from 'sonner'

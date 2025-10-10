@@ -1,11 +1,9 @@
-import { MOCK_COURSES } from '@/constants/mock'
-import { createFileRoute, linkOptions } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { CourseSkeleton } from './-components/course-skeleton'
 import { CourseCard } from '@/components/CourseCard'
 import { BookOpen } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
-import { courseService } from '@/models/services/course-service'
-
+import { courseService } from '@/models/services/CourseService'
 
 export const Route = createFileRoute('/_app/cursos/')({
   pendingComponent: CourseSkeleton,
@@ -13,26 +11,39 @@ export const Route = createFileRoute('/_app/cursos/')({
 })
 
 function RouteComponent() {
-  const { data: courses, isPending, error } = useQuery({
+  const {
+    data: courses,
+    isPending,
+    error,
+  } = useQuery({
     queryKey: ['courses'],
-    queryFn: courseService.getCourses
+    queryFn: courseService.getCourses,
   })
 
-  if (isPending || !courses) return< CourseSkeleton/>
-  if (error) return <div>Houve um erro...</div>
+  if (isPending || !courses) return <CourseSkeleton />
+  if (error)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-lg text-destructive">
+            Houve um erro ao carregar os cursos.
+          </p>
+        </div>
+      </div>
+    )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
-      {/* Header */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border-b border-border/50">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
-        <div className="relative container mx-auto px-6 py-16 text-center">
-          <div>
-            <BookOpen className="mx-auto mb-6 h-16 w-16 text-primary" />
-            <h1 className="mb-4 text-5xl font-bold text-balance bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+    <div className="min-h-screen bg-background">
+      <div className="relative overflow-hidden border-b bg-gradient-to-br from-primary/5 via-background to-accent/5">
+        <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-20">
+          <div className="text-center max-w-3xl mx-auto">
+            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-primary/10 mb-6">
+              <BookOpen className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-balance">
               Seleção de Cursos
             </h1>
-            <p className="mx-auto max-w-2xl text-xl text-muted-foreground text-pretty">
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground text-pretty leading-relaxed">
               Explore nossa coleção completa de cursos organizados por
               categoria. Encontre o conhecimento que você precisa para avançar
               em seus estudos.
@@ -41,26 +52,33 @@ function RouteComponent() {
         </div>
       </div>
 
-      <section className="max-w-4xl mx-auto flex flex-col space-y-6 py-12 px-6">
-        <h1 className="text-3xl text-accent font-bold">
-          Cursos do Ensino Técnico
-        </h1>
-        {courses
-          .filter((c) => c.category === 0)
-          .map((c) => (
-            <CourseCard key={c.id} course={c} />
-          ))}
-      </section>
-      <section className="max-w-4xl mx-auto flex flex-col space-y-6 py-12 px-6">
-        <h1 className="text-3xl text-accent font-bold">
-          Cursos do Ensino Médio
-        </h1>
-        {courses
-          .filter((c) => c.category === 1)
-          .map((c) => (
-            <CourseCard key={c.id} course={c} />
-          ))}
-      </section>
+      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-16 space-y-12 sm:space-y-16">
+        <section>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-foreground">
+            Cursos do Ensino Técnico
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {courses
+              .filter((c) => c.category === 0)
+              .map((c) => (
+                <CourseCard key={c.id} course={c} />
+              ))}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-foreground">
+            Cursos do Ensino Médio
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {courses
+              .filter((c) => c.category === 1)
+              .map((c) => (
+                <CourseCard key={c.id} course={c} />
+              ))}
+          </div>
+        </section>
+      </div>
     </div>
   )
 }

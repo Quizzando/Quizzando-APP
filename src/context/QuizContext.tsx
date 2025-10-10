@@ -1,5 +1,5 @@
-import type { Quiz } from '@/models/@types'
-import { quizService } from '@/models/services/quiz-service'
+import type { Quiz } from '@/@types'
+import { disciplineService } from '@/models/services/DisciplineService'
 import {
   createContext,
   useEffect,
@@ -57,7 +57,7 @@ export const QuizProvider = ({ disciplineId, children }: QuizProviderProps) => {
         setError(null)
         setIsLoading(true)
 
-        const generatedQuiz = await quizService.generateQuiz(disciplineId)
+        const generatedQuiz = await disciplineService.generateQuiz(disciplineId)
         setQuiz(generatedQuiz)
       } catch (err: any) {
         const message =

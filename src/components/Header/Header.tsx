@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { Button } from '../ui/button'
-import { useAuth } from '@/hooks/use-auth'
+import { useAuth } from '@/hooks/useAuth'
 import { UserMenu } from '../UserMenu'
 import { House, Gamepad2, CirclePlus, ArrowRight } from 'lucide-react'
 import { QuizSearchBar } from '@/components/QuizSearchBar'

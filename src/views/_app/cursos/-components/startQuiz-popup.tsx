@@ -9,8 +9,8 @@ import {
   DialogDescription,
   DialogClose,
 } from '@/components/ui/dialog'
-import { useAuth } from '@/hooks/use-auth'
-import type { Discipline } from '@/models/@types'
+import { useAuth } from '@/hooks/useAuth'
+import type { Discipline } from '@/@types'
 import { Link } from '@tanstack/react-router'
 import { AlertTriangle } from 'lucide-react'
 import type { PropsWithChildren } from 'react'

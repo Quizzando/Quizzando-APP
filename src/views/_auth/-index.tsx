@@ -2,8 +2,7 @@ import { CourseCard } from '@/components/CourseCard'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { Button } from '@/components/ui/button'
-import { MOCK_COURSES } from '@/constants/mock'
-import type { Course } from '@/models/@types'
+import type { Course } from '@/@types'
 import { Link } from '@tanstack/react-router'
 import {
   ArrowRight,
@@ -14,13 +13,25 @@ import {
   Palette,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { COURSES_KEY } from '@/constants/keys'
+import { courseService } from '@/models/services/CourseService'
 
 export function LandingPage() {
+  const { data, isPending } = useQuery({
+    queryKey: [COURSES_KEY],
+    queryFn: courseService.getCourses,
+  })
+
   return (
     <>
       <Header />
       <HeroSection />
-      <CoursesCarousel courses={MOCK_COURSES} />
+      {isPending || !data ? (
+        <div>Loading...</div>
+      ) : (
+        <CoursesCarousel courses={data} />
+      )}
       <Footer />
     </>
   )

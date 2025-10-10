@@ -1,6 +1,5 @@
+import { AUTH_TOKEN_KEY } from '@/constants/keys'
 import { decodeJwt } from 'jose'
-
-const AUTH_TOKEN_KEY = 'auth-token'
 
 // === TOKEN HELPERS === //
 export function setToken(token: string | null) {

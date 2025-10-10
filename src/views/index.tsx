@@ -1,4 +1,4 @@
-import { useAuth } from '@/hooks/use-auth'
+import { useAuth } from '@/hooks/useAuth'
 import { createFileRoute } from '@tanstack/react-router'
 import { LandingPage } from '@/views/_auth/-index'
 import { HomePage } from '@/views/_app/-index'

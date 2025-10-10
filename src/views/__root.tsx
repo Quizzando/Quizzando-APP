@@ -5,8 +5,8 @@ import { TanstackDevtools } from '@tanstack/react-devtools'
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
 import type { QueryClient } from '@tanstack/react-query'
-import { ThemeProvider } from '@/controllers/theme-context'
-import type { AuthProviderState } from '@/controllers/auth-context'
+import { ThemeProvider } from '@/context/ThemeContext'
+import type { AuthProviderState } from '@/context/AuthContext'
 import { NotFound } from './-not-found'
 import { Toaster } from 'sonner'
 

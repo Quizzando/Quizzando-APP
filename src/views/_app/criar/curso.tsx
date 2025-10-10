@@ -5,8 +5,8 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { CourseCategoryPicker } from './-components/course-category-picker'
-import type { Course } from '@/models/@types'
-import { courseService } from '@/models/services/course-service'
+import type { Course } from '@/@types'
+import { courseService } from '@/models/services/CourseService'
 
 export const Route = createFileRoute('/_app/criar/curso')({
   component: RouteComponent,
@@ -25,9 +25,11 @@ function RouteComponent() {
   const [category, setCategory] = useState(0)
   const [rating, setRating] = useState(0)
   const [icon, setIcon] = useState('')
-  
+
   const [backgroundImage, setBackgroundImage] = useState<File | null>(null)
-  const [backgroundPreview, setBackgroundPreview] = useState<string | null>(null)
+  const [backgroundPreview, setBackgroundPreview] = useState<string | null>(
+    null,
+  )
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -37,7 +39,7 @@ function RouteComponent() {
       category,
       rating,
       backgroundImage,
-      icon
+      icon,
     }
 
     console.log(cursoData)
@@ -55,7 +57,9 @@ function RouteComponent() {
     setCategory(Number(value))
   }
 
-  const handleBackgroundImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBackgroundImageChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0]
     if (file) {
       setBackgroundImage(file)
@@ -68,17 +72,16 @@ function RouteComponent() {
       }
 
       reader.readAsDataURL(file)
-    }
-    else {
+    } else {
       setBackgroundImage(null)
       setBackgroundPreview(null)
     }
   }
 
   return (
-    <div className='flex items-center flex-col py-8 px-4'>
-      <FormCard formTitle='Criar novo Curso'>
-        <form onSubmit={handleSubmit} className='space-y-6'>
+    <div className="flex items-center flex-col py-8 px-4">
+      <FormCard formTitle="Criar novo Curso">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="name">Nome do Curso</Label>
             <Input
@@ -93,12 +96,16 @@ function RouteComponent() {
           <div className="space-y-2">
             <Label htmlFor="backgroundImage">Imagem de Fundo</Label>
             <Input
-              type='file'
+              type="file"
               id="backgroundImage"
               onChange={handleBackgroundImageChange}
             />
             {backgroundPreview && (
-              <img src={backgroundPreview} alt="Imagem Preview" className="mt-2" />
+              <img
+                src={backgroundPreview}
+                alt="Imagem Preview"
+                className="mt-2"
+              />
             )}
           </div>
 
@@ -121,7 +128,7 @@ function RouteComponent() {
             />
           </div>
 
-          <Button type='submit' className='w-full'>
+          <Button type="submit" className="w-full">
             Criar Curso
           </Button>
         </form>

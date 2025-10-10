@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { QuizProvider } from '@/controllers/quiz-context'
-import { useQuiz } from '@/hooks/use-quiz'
+import { QuizProvider } from '@/context/QuizContext'
+import { useQuiz } from '@/hooks/useQuiz'
 import { QuestionBox } from '../-components/question'
 
 export const Route = createFileRoute(

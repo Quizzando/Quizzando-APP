@@ -9,8 +9,8 @@ import { routeTree } from './routeTree.gen'
 
 import './styles.css'
 import reportWebVitals from './reportWebVitals.ts'
-import { useAuth } from './hooks/use-auth.tsx'
-import { AuthProvider } from './controllers/auth-context.tsx'
+import { useAuth } from '@/hooks/useAuth.tsx'
+import { AuthProvider } from '@/context/AuthContext.tsx'
 
 // Create a new router instance
 

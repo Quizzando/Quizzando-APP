@@ -1,4 +1,4 @@
-import type { User } from '../@types'
+import type { User } from '@/@types'
 import type {
   LoginFormSchema,
   RegisterFormSchema,
@@ -7,7 +7,6 @@ import { handleApiResponse } from '@/utils/handleApiResponse'
 import { decryptToken, getToken, setToken } from '@/utils/token'
 
 export const authService = {
-  // === REGISTER === //
   async register({
     username,
     email,
@@ -29,7 +28,6 @@ export const authService = {
     }
   },
 
-  // === LOGIN === //
   async login({ email, password }: LoginFormSchema): Promise<User | null> {
     try {
       const { token } = await handleApiResponse<{ token: string }>(
@@ -49,7 +47,6 @@ export const authService = {
     }
   },
 
-  // === GET USER === //
   async getUser(id: string): Promise<User | null> {
     try {
       const token = getToken()

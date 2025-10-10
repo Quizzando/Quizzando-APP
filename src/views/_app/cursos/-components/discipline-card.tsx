@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
-import type { Discipline } from '@/models/@types'
+import type { Discipline } from '@/@types'
 import { BookOpen } from 'lucide-react'
 import { StartQuizPopup } from './startQuiz-popup'
 

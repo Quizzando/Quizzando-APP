@@ -1,4 +1,4 @@
-import { QuizProviderContext } from '@/controllers/quiz-context'
+import { QuizProviderContext } from '@/context/QuizContext'
 import { useContext } from 'react'
 
 export const useQuiz = () => {

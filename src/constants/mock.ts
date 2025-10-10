@@ -1,4 +1,4 @@
-import type { Course, Discipline, Quiz, User } from '@/models/@types'
+import type { Course, Discipline, Quiz, User } from '@/@types'
 
 export const MOCK_QUESTIONS: Quiz['questions'] = [
   {

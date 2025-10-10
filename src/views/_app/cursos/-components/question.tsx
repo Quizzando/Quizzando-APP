@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
-import type { Answer, Question } from '@/models/@types'
+import type { Answer, Question } from '@/@types'
 import { Button } from '@/components/ui/button'
 import { shuffleArray } from '@/utils/shuffleArray'
-import { useQuiz } from '@/hooks/use-quiz'
+import { useQuiz } from '@/hooks/useQuiz'
 
 interface QuestionProps {
   question: Question & { answers: Answer[] }

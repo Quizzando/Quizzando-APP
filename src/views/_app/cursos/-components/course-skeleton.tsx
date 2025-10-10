@@ -1,71 +1,60 @@
 import { Skeleton } from '@/components/ui/skeleton'
+import { BookOpen } from 'lucide-react'
 
 export function CourseSkeleton() {
   return (
-    <div className="flex flex-col">
-      {/* === SEÇÃO DESCRITIVA === */}
-      <section className="w-full flex flex-col md:flex-row items-center md:items-start space-x-6 px-6 py-4">
-        {/* Imagem do curso */}
-        <div className="relative max-w-1/2">
-          <Skeleton className="h-96 w-180 rounded-xl" />
-          <Skeleton className="absolute top-2 right-2 h-6 w-24 rounded-full" />
-        </div>
-
-        <div className="flex flex-col max-w-1/2 space-y-6 mt-4 md:mt-0">
-          <div>
-            <Skeleton className="h-8 w-64 mb-2" /> {/* Título */}
-            <Skeleton className="h-4 w-20" /> {/* Rating */}
+    <div className="min-h-screen bg-background">
+      {/* Header Skeleton */}
+      <div className="relative overflow-hidden border-b bg-gradient-to-br from-primary/5 via-background to-accent/5">
+        <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-20">
+          <div className="text-center max-w-3xl mx-auto">
+            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-primary/10 mb-6">
+              <BookOpen className="w-8 h-8 sm:w-10 sm:h-10 text-primary animate-pulse" />
+            </div>
+            <Skeleton className="h-10 sm:h-12 lg:h-14 w-3/4 mx-auto mb-4" />
+            <Skeleton className="h-5 sm:h-6 w-full max-w-2xl mx-auto mb-2" />
+            <Skeleton className="h-5 sm:h-6 w-4/5 max-w-xl mx-auto" />
           </div>
+        </div>
+      </div>
 
-          <h3 className="text-xl font-semibold">Visão Geral</h3>
-
-          <div className="flex flex-col items-center justify-center md:flex-row md:justify-evenly p-6 gap-6">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="bg-card p-8 rounded-lg flex flex-col items-center space-y-2 shadow-sm w-40"
-              >
-                <Skeleton className="h-6 w-6 rounded-full" /> {/* Ícone */}
-                <Skeleton className="h-4 w-24" />
-              </div>
+      {/* Content Skeleton */}
+      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-16 space-y-12 sm:space-y-16">
+        {/* Section 1 */}
+        <section>
+          <Skeleton className="h-8 sm:h-9 w-64 mb-6 sm:mb-8" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <CourseCardSkeleton key={i} />
             ))}
           </div>
+        </section>
 
-          <div>
-            <h3 className="text-xl font-semibold">Descrição</h3>
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-5/6" />
-              <Skeleton className="h-4 w-2/3" />
-            </div>
+        {/* Section 2 */}
+        <section>
+          <Skeleton className="h-8 sm:h-9 w-64 mb-6 sm:mb-8" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <CourseCardSkeleton key={i} />
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
+    </div>
+  )
+}
 
-      {/* === SEÇÃO DE DISCIPLINAS DO CURSO === */}
-      <section className="w-full px-6 py-4">
-        <div className="mb-8">
-          <h2 className="font-playfair text-3xl font-bold text-foreground mb-4">
-            Disciplinas do Curso
-          </h2>
-          <p className="text-muted-foreground">
-            Explore todas as disciplinas que compõem este curso
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-          {Array.from({ length: 4 }).map((_, idx) => (
-            <div
-              key={idx}
-              className="bg-card p-6 rounded-lg flex flex-col space-y-4 shadow-sm"
-            >
-              <Skeleton className="h-6 w-40" /> {/* Nome da disciplina */}
-              <Skeleton className="h-4 w-3/4" /> {/* Subtexto */}
-              <Skeleton className="h-24 w-full rounded-md" /> {/* Preview */}
-            </div>
-          ))}
-        </div>
-      </section>
+function CourseCardSkeleton() {
+  return (
+    <div className="rounded-xl border bg-card p-6 space-y-4">
+      <Skeleton className="h-40 w-full rounded-lg" />
+      <Skeleton className="h-6 w-3/4" />
+      <Skeleton className="h-4 w-full" />
+      <Skeleton className="h-4 w-5/6" />
+      <div className="flex gap-2 pt-2">
+        <Skeleton className="h-9 flex-1" />
+        <Skeleton className="h-9 w-9" />
+      </div>
     </div>
   )
 }

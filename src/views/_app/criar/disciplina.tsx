@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import type { Answer, Question } from '@/models/@types'
+import type { Answer, Question } from '@/@types'
 
 type CreateAnswer = Omit<Answer, 'questionId'>
 type CreateQuestion = Omit<Question, 'disciplineId'>
@@ -120,15 +120,12 @@ function RouteComponent() {
 
   return (
     <div className="flex items-center flex-col py-8 px-4">
-      <FormCard formTitle='Criar novo Quiz'>
+      <FormCard formTitle="Criar novo Quiz">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div className="space-y-2">
               <Label>Curso</Label>
-              <CoursePicker
-                value={courseId}
-                onChange={handleCourseIdChange}
-              />
+              <CoursePicker value={courseId} onChange={handleCourseIdChange} />
             </div>
 
             <div className="space-y-2">
