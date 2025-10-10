@@ -3,23 +3,23 @@ import { createFileRoute } from '@tanstack/react-router'
 import { DisciplineCard } from '../-components/discipline-card'
 import { Clock, PencilLine, Star, Users } from 'lucide-react'
 import { CourseDetailsSkeleton } from '../-components/course-details-skeleton'
+import { useQuery } from '@tanstack/react-query'
+import { courseService } from '@/models/services/course-service'
 
 export const Route = createFileRoute('/_app/cursos/$courseId/')({
-  loader: async ({ params: { courseId } }) => {
-    // ... lógica de fetch do curso
-
-    const course = MOCK_COURSES.find((c) => c.id === courseId)!
-
-    await new Promise((resolve) => setTimeout(resolve, 3000))
-
-    return course
-  },
   pendingComponent: CourseDetailsSkeleton,
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const course = Route.useLoaderData()
+  const {courseId} = Route.useParams()
+  const {data: course, isPending, error} = useQuery({
+    queryKey: ['course', courseId],
+    queryFn: () => courseService.getCourse(courseId),
+  })
+
+  if (isPending || !course) return <div>Loading...</div>
+  if (error) return <div>Houve um erro...</div>
 
   return (
     <div className="flex flex-col">

@@ -37,16 +37,6 @@ export function CourseCard({ course }: { course: Course }) {
           </p>
 
           <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center">
-                <PencilLine className="mr-1 h-3 w-3" />
-                {course.disciplines.length} Disciplinas
-              </div>
-              <div className="flex items-center">
-                <Clock className="mr-1 h-3 w-3" />
-                {course.disciplines.length * 5}hrs
-              </div>
-            </div>
             <div className="flex items-center">
               <Star className="mr-1 h-3 w-3 fill-yellow-400 text-yellow-400" />
               {course.rating}

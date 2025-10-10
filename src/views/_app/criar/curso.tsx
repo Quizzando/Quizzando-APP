@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { CourseCategoryPicker } from './-components/course-category-picker'
 import type { Course } from '@/models/@types'
-import { quizService } from '@/models/services/quiz-service'
+import { courseService } from '@/models/services/course-service'
 
 export const Route = createFileRoute('/_app/criar/curso')({
   component: RouteComponent,

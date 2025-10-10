@@ -1,8 +1,6 @@
 import { MOCK_QUESTIONS } from '@/constants/mock'
-import type { Course, Quiz } from '@/models/@types'
-import { handleApiResponse } from '@/utils/handleApiResponse'
+import type { Quiz } from '@/models/@types'
 import { getToken } from '@/utils/token'
-import type { CursoFormData } from '@/views/_app/criar/curso'
 
 export const quizService = {
   async generateQuiz(disciplineId: string): Promise<Quiz | null> {
@@ -33,32 +31,4 @@ export const quizService = {
       throw error
     }
   },
-
-  // === GET COURSES === //
-  async getCourses(): Promise<Course[] | null> {
-    try {
-      return await handleApiResponse<Course[]>(
-        await fetch(`/api/course`),
-      )
-    } catch (error) {
-      console.error('Erro ao retornar cursos:', error)
-      throw error
-    }
-  },
-
-  // === CRIAR CURSO === //
-    async createCourse({ name, backgroundImage, category, icon, rating }: CursoFormData): Promise<Course | null> {
-      try {
-        return await handleApiResponse<Course>(
-          await fetch(`/api/course`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, backgroundImage, category, icon, rating }),
-          }),
-        )
-      } catch (error) {
-        console.error('Erro ao criar novo curso:', error)
-        throw error
-      }
-    },
 }
