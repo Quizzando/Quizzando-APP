@@ -1,30 +1,25 @@
 import { MOCK_COURSES } from '@/constants/mock'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, linkOptions } from '@tanstack/react-router'
 import { CourseSkeleton } from './-components/course-skeleton'
 import { CourseCard } from '@/components/CourseCard'
 import { BookOpen } from 'lucide-react'
-import type { Course } from '@/models/@types'
+import { useQuery } from '@tanstack/react-query'
+import { courseService } from '@/models/services/course-service'
+
 
 export const Route = createFileRoute('/_app/cursos/')({
-  loader: async () => {
-    // ... lógica de fetch dos cursos
-
-    // const courses = MOCK_COURSES
-
-    const response = await fetch('/api/course')
-    const { courses } = await response.json()
-    console.log(courses)
-
-    return courses
-  },
   pendingComponent: CourseSkeleton,
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const courses: Course[] = Route.useLoaderData()
+  const { data: courses, isPending, error } = useQuery({
+    queryKey: ['courses'],
+    queryFn: courseService.getCourses
+  })
 
-  if (!courses) return <div>Loading...</div>
+  if (isPending || !courses) return< CourseSkeleton/>
+  if (error) return <div>Houve um erro...</div>
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
