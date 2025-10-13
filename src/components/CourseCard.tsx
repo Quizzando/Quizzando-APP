@@ -29,7 +29,7 @@ export function CourseCard({ course }: { course: Course }) {
         </div>
 
         <CardContent className="p-6">
-          <h3 className="font-playfair text-xl font-semibold text-card-foreground group-hover:text-primary transition-colors">
+          <h3 className="font-playfair text-xl font-semibold text-card-foreground group-hover:text-primary transition-colors truncate">
             {course.courseName}
           </h3>
           <p className="mt-2 text-sm text-muted-foreground line-clamp-2">

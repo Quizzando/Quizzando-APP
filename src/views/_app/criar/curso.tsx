@@ -7,13 +7,14 @@ import { useState } from 'react'
 import { CourseCategoryPicker } from './-components/course-category-picker'
 import type { Course } from '@/@types'
 import { courseService } from '@/models/services/CourseService'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 export const Route = createFileRoute('/_app/criar/curso')({
   component: RouteComponent,
 })
 
 export type CursoFormData = {
-  name: string
+  courseName: string
   category: Course['category']
   rating: number
   backgroundImage: File | null
@@ -21,21 +22,23 @@ export type CursoFormData = {
 }
 
 function RouteComponent() {
-  const [name, setName] = useState('')
+  // const { mutate } = useMutation({
+    
+  // })
+
+  const [courseName, setCourseName] = useState('')
   const [category, setCategory] = useState(0)
   const [rating, setRating] = useState(0)
   const [icon, setIcon] = useState('')
 
-  const [backgroundImage, setBackgroundImage] = useState<File | null>(null)
-  const [backgroundPreview, setBackgroundPreview] = useState<string | null>(
-    null,
-  )
+  const [backgroundImage, setBackgroundImage] = useState<string | null>(null)
+  const [backgroundPreview, setBackgroundPreview] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     const cursoData: CursoFormData = {
-      name,
+      courseName,
       category,
       rating,
       backgroundImage,
@@ -60,18 +63,10 @@ function RouteComponent() {
   const handleBackgroundImageChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      setBackgroundImage(file)
-      const reader = new FileReader()
-
-      reader.onloadend = () => {
-        if (reader.result) {
-          setBackgroundPreview(reader.result as string)
-        }
-      }
-
-      reader.readAsDataURL(file)
+    const imageURL = e.target.value
+    if (imageURL) {
+      setBackgroundImage(imageURL)
+      setBackgroundPreview(imageURL)
     } else {
       setBackgroundImage(null)
       setBackgroundPreview(null)
@@ -83,11 +78,11 @@ function RouteComponent() {
       <FormCard formTitle="Criar novo Curso">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="name">Nome do Curso</Label>
+            <Label htmlFor="courseName">Nome do Curso</Label>
             <Input
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              id="courseName"
+              value={courseName}
+              onChange={(e) => setCourseName(e.target.value)}
               placeholder="Digite o nome do curso"
               required
             />
@@ -96,7 +91,7 @@ function RouteComponent() {
           <div className="space-y-2">
             <Label htmlFor="backgroundImage">Imagem de Fundo</Label>
             <Input
-              type="file"
+              type="text"
               id="backgroundImage"
               onChange={handleBackgroundImageChange}
             />
@@ -110,7 +105,7 @@ function RouteComponent() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="name">Categoria do Curso</Label>
+            <Label htmlFor="courseName">Categoria do Curso</Label>
             <CourseCategoryPicker
               value={String(category)}
               onChange={handleCourseCategoryPicker}
@@ -118,7 +113,7 @@ function RouteComponent() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="name">Ícone do Curso</Label>
+            <Label htmlFor="courseName">Ícone do Curso</Label>
             <Input
               id="icon"
               value={icon}

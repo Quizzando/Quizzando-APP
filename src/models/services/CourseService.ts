@@ -1,5 +1,6 @@
-import { handleApiResponse } from '@/utils/handleApiResponse'
 import type { Course } from '@/@types'
+import { handleApiResponse } from '@/utils/handleApiResponse'
+import { getToken } from '@/utils/token'
 
 export const courseService = {
   async getCourses(): Promise<Course[] | null> {
@@ -34,10 +35,16 @@ export const courseService = {
     rating,
   }: Course): Promise<Course | null> {
     try {
+      const token = getToken()
+      if (!token) throw new Error('Token não encontrado')
+
       const newCourse = handleApiResponse<Course>(
         await fetch(`/api/course`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({
             courseName,
             backgroundImage,
