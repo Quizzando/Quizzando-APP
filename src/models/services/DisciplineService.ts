@@ -14,10 +14,10 @@ export const disciplineService = {
       throw error
     }
   },
-  async getCourseById(courseId: string): Promise<Discipline | null> {
+  async getDisciplineById(disciplineId: string): Promise<Discipline | null> {
     try {
       const discipline = await handleApiResponse<Discipline>(
-        await fetch(`/api/discipline/${courseId}`),
+        await fetch(`/api/discipline/${disciplineId}`),
       )
 
       return discipline

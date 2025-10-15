@@ -1,4 +1,4 @@
-import * as Lucide from 'lucide-react'
+import { Clock as ClockIcon } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface ClockProps {
@@ -7,34 +7,49 @@ interface ClockProps {
   size?: number
 }
 
-export function Clock({ seconds, duration = 60, size = 32 }: ClockProps) {
-  const segment = Math.floor(duration / 12)
-  const currentStep = Math.min(11, Math.floor(seconds / segment)) // 0-11
-  const time = (currentStep % 12) + 1 // convertendo para 1-12
+export function Clock({ seconds, duration = 30, size = 32 }: ClockProps) {
+  // Background color logic
+  const getBgColor = () => {
+    if (seconds > 20) return 'bg-green-500'
+    if (seconds > 10) return 'bg-yellow-400'
+    return 'bg-red-500'
+  }
 
-  const iconName = `Clock${time}` as keyof typeof Lucide
-  const Icon = Lucide[iconName]
-
-  if (!Icon) return null
+  const bgColor = getBgColor()
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={iconName}
-        initial={{ opacity: 0.2, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0.2, scale: 0.95 }}
-        transition={{
-          duration: 0.15,
-          type: 'spring',
-          stiffness: 300,
-          damping: 20,
-        }}
-      >
-        <Icon size={size} />
-      </motion.div>
-    </AnimatePresence>
-  )
+    <motion.div
+      className={`flex items-center space-x-3 px-3 py-2 rounded-xl text-white ${bgColor}`}
+      initial={{ opacity: 0.8 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={bgColor}
+          initial={{ scale: 0.9, rotate: -10 }}
+          animate={{ scale: 1, rotate: 0 }}
+          exit={{ scale: 0.9, rotate: 10 }}
+          transition={{
+            duration: 0.2,
+            type: 'spring',
+            stiffness: 300,
+            damping: 15,
+          }}
+        >
+          <ClockIcon size={size} />
+        </motion.div>
+      </AnimatePresence>
 
-  return
+      <motion.span
+        key={seconds}
+        initial={{ opacity: 0.6, y: -2 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.15 }}
+        className="font-mono font-bold text-lg"
+      >
+        {seconds}s
+      </motion.span>
+    </motion.div>
+  )
 }

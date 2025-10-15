@@ -1,11 +1,16 @@
 'use client'
 
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { Clock, PencilLine, Star, Users } from 'lucide-react'
 import { CourseDetailsSkeleton } from '../-components/course-details-skeleton'
 import { useQuery } from '@tanstack/react-query'
 import { courseService } from '@/models/services/CourseService'
 import { COURSES_KEY } from '@/constants/keys'
+import { DisciplineCard } from '../-components/discipline-card'
+import { disciplineService } from '@/models/services/DisciplineService'
+import { Button } from '@/components/ui/button'
+import { useEffect, useState } from 'react'
+import type { Discipline } from '@/@types'
 
 export const Route = createFileRoute('/_app/cursos/$courseId/')({
   pendingComponent: CourseDetailsSkeleton,
@@ -14,12 +19,46 @@ export const Route = createFileRoute('/_app/cursos/$courseId/')({
 
 function RouteComponent() {
   const { courseId } = Route.useParams()
-  const { data: course, isPending } = useQuery({
+  const {
+    data: course,
+    isPending,
+    error,
+    refetch,
+  } = useQuery({
     queryKey: [COURSES_KEY, courseId],
     queryFn: () => courseService.getCourseById(courseId),
   })
 
-  if (isPending || !course) return <CourseDetailsSkeleton />
+  const [disciplines, setDisciplines] = useState<Discipline[]>([])
+  useEffect(() => {
+    const fetchDisciplines = async () => {
+      if (!course?.disciplines?.length) return
+
+      try {
+        const response = await Promise.all(
+          course.disciplines.map((id) =>
+            disciplineService.getDisciplineById(id),
+          ),
+        )
+
+        setDisciplines(response.filter(Boolean) as Discipline[])
+      } catch (error) {
+        console.error('Error fetching disciplines:', error)
+      }
+    }
+
+    fetchDisciplines()
+  }, [courseId, course])
+
+  if (isPending) return <CourseDetailsSkeleton />
+
+  if (error || !course)
+    return (
+      <div>
+        <p>Erro ao buscar cursos...</p>
+        <Button onClick={() => refetch()}>Tentar Novamente</Button>
+      </div>
+    )
 
   return (
     <div className="flex flex-col">
@@ -45,7 +84,7 @@ function RouteComponent() {
             </h3>
             <div className="flex items-center mt-1">
               <Star className="mr-1 h-3 w-3 fill-yellow-400 text-yellow-400" />
-              {course.rating}
+              {course.rating?.toFixed(1)}
             </div>
           </div>
 
@@ -58,8 +97,9 @@ function RouteComponent() {
                 <Users className="h-5 w-5 text-secondary fill-secondary/20" />
                 <p className="w-full text-center text-sm">
                   <span className="font-semibold text-primary">
-                    {' '}
-                    {/* {Math.floor(Math.random() * 100 * course.disciplines.length)} */}
+                    {Math.floor(
+                      Math.random() * 100 * course.disciplines.length,
+                    )}
                   </span>{' '}
                   Respondentes
                 </p>
@@ -68,7 +108,7 @@ function RouteComponent() {
                 <Clock className="h-5 w-5 text-secondary fill-secondary/20" />
                 <p className="w-full text-center text-sm">
                   <span className="font-semibold text-primary">
-                    {/* ~{course.disciplines.length * 5} */}
+                    ~{course.disciplines.length * 5}
                   </span>
                   hrs de conteúdo
                 </p>
@@ -77,7 +117,7 @@ function RouteComponent() {
                 <PencilLine className="h-5 w-5 text-secondary fill-secondary/20" />
                 <p className="w-full text-center text-sm">
                   <span className="font-semibold text-primary">
-                    {course.rating}
+                    {course.disciplines.length}
                   </span>{' '}
                   Disciplinas cadastradas
                 </p>
@@ -105,11 +145,22 @@ function RouteComponent() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-          {/* {course.disciplines.map((discipline) => (
-            <DisciplineCard discipline={discipline} />
-          ))} */}
-        </div>
+        {disciplines.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            {disciplines.map((discipline) => (
+              <DisciplineCard discipline={discipline} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-40 my-10 space-y-6">
+            <p className="text-center">
+              Hmmm, Parece que nenhuma disciplina foi cadastrada ainda :(
+            </p>
+            <Link to="/cursos">
+              <Button>Voltar</Button>
+            </Link>
+          </div>
+        )}
       </section>
     </div>
   )

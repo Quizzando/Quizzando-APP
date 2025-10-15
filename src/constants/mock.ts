@@ -1,5 +1,7 @@
 import type { Course, Discipline, Quiz, User } from '@/@types'
 
+export const MOCK_DISCIPLINE_ID = '8dd48655-c99e-43c5-a541-38703ffd237c'
+
 export const MOCK_QUESTIONS: Quiz['questions'] = [
   {
     id: 'd8ca3eba-0838-412e-8655-aace1c531194',

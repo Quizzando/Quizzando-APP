@@ -9,10 +9,12 @@ import { ThemeProvider } from '@/context/ThemeContext'
 import type { AuthProviderState } from '@/context/AuthContext'
 import { NotFound } from './-not-found'
 import { Toaster } from 'sonner'
+import type { QuizProviderState } from '@/context/QuizContext'
 
 interface MyRouterContext {
   queryClient: QueryClient
   auth: AuthProviderState
+  quiz: QuizProviderState
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({

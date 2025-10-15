@@ -39,7 +39,7 @@ export function CourseCard({ course }: { course: Course }) {
           <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
             <div className="flex items-center">
               <Star className="mr-1 h-3 w-3 fill-yellow-400 text-yellow-400" />
-              {course.rating}
+              {course.rating?.toFixed(1)}
             </div>
           </div>
         </CardContent>

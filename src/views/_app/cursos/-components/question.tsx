@@ -52,7 +52,7 @@ export const QuestionBox = ({ question, disciplineName }: QuestionProps) => {
 
     // Visual feedback delay (optional)
     setTimeout(() => {
-      handleAnswer(question.id!, selectedAnswer.isCorrect!)
+      handleAnswer(selectedAnswer)
     }, 800)
   }
 

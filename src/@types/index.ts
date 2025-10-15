@@ -30,7 +30,7 @@ export type Course = {
   category: 0 | 1
   rating?: number
 
-  disciplines: Discipline[]
+  disciplines: string[]
 
   createdAt?: string
   updatedAt?: string

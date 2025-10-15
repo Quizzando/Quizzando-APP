@@ -11,6 +11,7 @@ import './styles.css'
 import reportWebVitals from './reportWebVitals.ts'
 import { useAuth } from '@/hooks/useAuth.tsx'
 import { AuthProvider } from '@/context/AuthContext.tsx'
+import { useQuiz } from './hooks/useQuiz.tsx'
 
 // Create a new router instance
 
@@ -20,6 +21,7 @@ const router = createRouter({
   context: {
     ...TanStackQueryProviderContext,
     auth: undefined!,
+    quiz: undefined!,
   },
   defaultPreload: 'intent',
   scrollRestoration: true,
@@ -36,7 +38,8 @@ declare module '@tanstack/react-router' {
 
 function InnerApp() {
   const auth = useAuth()
-  return <RouterProvider router={router} context={{ auth }} />
+  const quiz = useQuiz()
+  return <RouterProvider router={router} context={{ auth, quiz }} />
 }
 
 // Render the app
