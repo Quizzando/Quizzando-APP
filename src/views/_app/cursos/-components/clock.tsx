@@ -3,11 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 interface ClockProps {
   seconds: number
-  duration?: number
   size?: number
 }
 
-export function Clock({ seconds, duration = 30, size = 32 }: ClockProps) {
+export function Clock({ seconds, size = 32 }: ClockProps) {
   // Background color logic
   const getBgColor = () => {
     if (seconds > 20) return 'bg-green-500'

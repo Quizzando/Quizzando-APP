@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import {
@@ -9,22 +10,25 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { useQuiz } from '@/hooks/useQuiz'
+import { Link } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
 export const QuizCompletedScreen = () => {
   const { quiz, userScore, completeQuiz } = useQuiz()
 
   const totalQuestions = quiz?.questions.length ?? 0
-  const rightAnswers = userScore.right
-  const wrongAnswers = userScore.wrongs
-  const allAnswers = [...rightAnswers, ...wrongAnswers]
+  const { right, wrongs } = userScore
+  const allAnswers = [...right, ...wrongs]
 
   useEffect(() => {
     completeQuiz()
+    console.log(allAnswers)
   }, [])
 
   const progress =
-    totalQuestions > 0 ? (rightAnswers.length / totalQuestions) * 100 : 0
+    totalQuestions > 0 ? (right.length / totalQuestions) * 100 : 0
+
+  const opts = ['A)', 'B)', 'C)', 'D)', 'E)']
 
   return (
     <div className="max-w-5xl mx-auto py-10 flex flex-col space-y-4">
@@ -32,16 +36,17 @@ export const QuizCompletedScreen = () => {
 
       {/* === SCORE CARD === */}
       <div className="flex flex-row space-x-6">
-        <Card className="p-8 w-full ">
+        <Card className="p-8 w-full">
           <CardContent>
             <CardTitle>Seu desempenho</CardTitle>
             <h2 className="text-3xl py-6 font-bold">
-              <span className="text-primary">{rightAnswers.length}</span> /{' '}
+              <span className="text-primary">{right.length}</span> /{' '}
               {totalQuestions}
             </h2>
             <Progress value={progress} />
           </CardContent>
         </Card>
+
         <Card className="p-8">
           <CardContent>
             <CardTitle>Tempo de Conclusão</CardTitle>
@@ -65,38 +70,61 @@ export const QuizCompletedScreen = () => {
             </TableHeader>
 
             <TableBody>
-              {allAnswers.map((answer) => (
-                <TableRow key={answer.id}>
-                  <TableCell>{answer.id}</TableCell>
-                  <TableCell>
-                    {
-                      quiz?.questions
-                        .find((q) => q.id === answer.questionId)
-                        ?.answers.find((ans) => ans.isCorrect)?.answerText
-                    }
-                  </TableCell>
-                  <TableCell>{answer.answerText}</TableCell>
-                </TableRow>
-              ))}
-              {/* {quiz?.questions.map((q, qIndex) => {
-                const correctAnswer = q.answers.find((a) => a.isCorrect)!
-                const userAnswer = q.answers.filter((a) =>
-                  allAnswers.includes(a.id!),
+              {quiz?.questions.map((q, qIndex) => {
+                const correctAnswer = q.answers.find((a) => a.isCorrect)
+
+                // The user's chosen answer is the one whose ID exists in allAnswers
+                const userAnswer = q.answers.find((a) =>
+                  allAnswers.some((ua) => ua.id === a.id),
+                )
+
+                const correctIndex = q.answers.findIndex((a) => a.isCorrect)
+                const userIndex = q.answers.findIndex(
+                  (a) => a.id === userAnswer?.id,
                 )
 
                 return (
-                  <TableRow key={qIndex}>
-                    <TableCell>{qIndex + 1}</TableCell>
-                    <TableCell>{correctAnswer.answerText}</TableCell>
-                    <TableCell>
-                      {userAnswer[0] ? userAnswer[0].answerText : <p>-</p>}
+                  <TableRow key={q.id}>
+                    <TableCell className="w-1/6 font-semibold">
+                      {qIndex + 1}
+                    </TableCell>
+
+                    {/* Correct Answer */}
+                    <TableCell className="w-1/2 text-green-600">
+                      <p
+                        className="truncate max-w-[200px] whitespace-nowrap overflow-hidden"
+                        title={correctAnswer?.answerText}
+                      >
+                        {correctIndex !== -1 ? opts[correctIndex] : '-'}{' '}
+                        {correctAnswer?.answerText}
+                      </p>
+                    </TableCell>
+
+                    {/* User Answer */}
+                    <TableCell
+                      className={`w-1/2 ${
+                        userAnswer?.id === correctAnswer?.id
+                          ? 'text-green-600'
+                          : 'text-red-500'
+                      }`}
+                    >
+                      <p
+                        className="truncate max-w-[200px] whitespace-nowrap overflow-hidden"
+                        title={userAnswer?.answerText ?? '---'}
+                      >
+                        {userIndex !== -1 ? opts[userIndex] : '-)'}{' '}
+                        {userAnswer?.answerText ?? 'Sem resposta'}
+                      </p>
                     </TableCell>
                   </TableRow>
                 )
-              })} */}
+              })}
             </TableBody>
           </Table>
         </CardContent>
+        <Link to="/cursos">
+          <Button>Voltar para Cursos</Button>
+        </Link>
       </Card>
     </div>
   )
