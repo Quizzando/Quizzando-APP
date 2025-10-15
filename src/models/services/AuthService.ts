@@ -1,4 +1,5 @@
 import type { User } from '@/@types'
+import { API_BASE_URL } from '@/constants/api'
 import type {
   LoginFormSchema,
   RegisterFormSchema,
@@ -14,7 +15,7 @@ export const authService = {
   }: Omit<RegisterFormSchema, 'confirmPassword'>): Promise<User | null> {
     try {
       await handleApiResponse(
-        await fetch(`/api/user/register`, {
+        await fetch(`${API_BASE_URL}/user/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, email, password }),
@@ -31,7 +32,7 @@ export const authService = {
   async login({ email, password }: LoginFormSchema): Promise<User | null> {
     try {
       const { token } = await handleApiResponse<{ token: string }>(
-        await fetch(`/api/user/login`, {
+        await fetch(`${API_BASE_URL}/user/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
@@ -53,7 +54,7 @@ export const authService = {
       if (!token) throw new Error('Token não encontrado')
 
       return await handleApiResponse<User>(
-        await fetch(`/api/user/${id}`, {
+        await fetch(`${API_BASE_URL}/user/${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

@@ -1,11 +1,12 @@
 import type { Discipline, Quiz } from '@/@types'
+import { API_BASE_URL } from '@/constants/api'
 import { handleApiResponse } from '@/utils/handleApiResponse'
 
 export const disciplineService = {
   async getDisciplines(): Promise<Discipline[] | null> {
     try {
       const data = await handleApiResponse<{ disciplines: Discipline[] }>(
-        await fetch(`/api/discipline`),
+        await fetch(`${API_BASE_URL}/discipline`),
       )
 
       return data.disciplines
@@ -17,7 +18,7 @@ export const disciplineService = {
   async getDisciplineById(disciplineId: string): Promise<Discipline | null> {
     try {
       const discipline = await handleApiResponse<Discipline>(
-        await fetch(`/api/discipline/${disciplineId}`),
+        await fetch(`${API_BASE_URL}/discipline/${disciplineId}`),
       )
 
       return discipline
@@ -34,7 +35,7 @@ export const disciplineService = {
   }: Discipline): Promise<Discipline | null> {
     try {
       const newDiscipline = handleApiResponse<Discipline>(
-        await fetch(`/api/discipline`, {
+        await fetch(`${API_BASE_URL}/discipline`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -55,7 +56,7 @@ export const disciplineService = {
   async generateQuiz(disciplineId: string): Promise<Quiz | null> {
     try {
       const generatedQuiz = await handleApiResponse<Quiz>(
-        await fetch(`/api/course/quiz/${disciplineId}`),
+        await fetch(`${API_BASE_URL}/course/quiz/${disciplineId}`),
       )
 
       return generatedQuiz

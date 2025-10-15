@@ -1,4 +1,5 @@
 import type { User } from '@/@types'
+import { API_BASE_URL } from '@/constants/api'
 import { handleApiResponse } from '@/utils/handleApiResponse'
 import { getToken } from '@/utils/token'
 
@@ -14,7 +15,7 @@ export const userService = {
       if (!token) throw new Error('Token não encontrado')
 
       const updatedUser = await handleApiResponse<User>(
-        await fetch(`/api/user/${id}`, {
+        await fetch(`${API_BASE_URL}/user/${id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

@@ -1,4 +1,5 @@
 import type { Course } from '@/@types'
+import { API_BASE_URL } from '@/constants/api'
 import { handleApiResponse } from '@/utils/handleApiResponse'
 import { getToken } from '@/utils/token'
 
@@ -6,7 +7,7 @@ export const courseService = {
   async getCourses(): Promise<Course[] | null> {
     try {
       const data = await handleApiResponse<{ courses: Course[] }>(
-        await fetch(`/api/course`),
+        await fetch(`${API_BASE_URL}/course`),
       )
 
       return data.courses
@@ -18,7 +19,7 @@ export const courseService = {
   async getCourseById(courseId: string): Promise<Course | null> {
     try {
       const course = await handleApiResponse<Course>(
-        await fetch(`/api/course/${courseId}`),
+        await fetch(`${API_BASE_URL}/course/${courseId}`),
       )
 
       return course
@@ -39,7 +40,7 @@ export const courseService = {
       if (!token) throw new Error('Token não encontrado')
 
       const newCourse = handleApiResponse<Course>(
-        await fetch(`/api/course`, {
+        await fetch(`${API_BASE_URL}/course`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

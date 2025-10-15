@@ -1,3 +1,13 @@
+import { createFileRoute } from '@tanstack/react-router'
+export const Route = createFileRoute('/_auth/forgot-password')({
+  component: RouteComponent,
+})
+
+function RouteComponent() {
+  return <div className="flex flex-col justify-center items-center"></div>
+}
+
+/*
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -47,7 +57,7 @@ function RouteComponent() {
         <h1 className="text-3xl font-medium">Recuperação de Senha</h1>
       </div>
 
-      {/* <form.Field
+       <form.Field
         name="recoverEmail"
         validators={{ ...emailValidators }}
         children={(field) => (
@@ -58,8 +68,8 @@ function RouteComponent() {
             errors={field.state.meta.errors}
           />
         )}
-      /> */}
-      {/* <form.Field
+      />
+     <form.Field
         name="authCode"
         children={(field) => (
           <AuthCodeField
@@ -67,7 +77,6 @@ function RouteComponent() {
             handleChange={field.handleChange}
           />
         )}
-      /> */}
       <form.Field
         name="password"
         children={(field) => (
@@ -180,3 +189,5 @@ function ResetPasswordField({
     </div>
   )
 }
+
+*/
