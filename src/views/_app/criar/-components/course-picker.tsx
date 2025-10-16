@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { Check, ChevronsUpDown } from 'lucide-react'
-import { MOCK_COURSES } from '@/constants/mock'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -16,18 +15,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-
-const courses = MOCK_COURSES.map((course) => {
-  return {
-    id: course.id,
-    value: formatCourseName(course.courseName),
-    label: course.courseName,
-  }
-})
-
-function formatCourseName(courseName: string): string {
-  return courseName.toLowerCase().replace(/\s+/g, '')
-}
+import { courseService } from '@/models/services/CourseService'
+import { useQuery } from '@tanstack/react-query'
+import { COURSES_KEY } from '@/constants/keys'
 
 interface CoursePickerProps {
   value: string
@@ -35,6 +25,11 @@ interface CoursePickerProps {
 }
 
 export function CoursePicker({ value, onChange }: CoursePickerProps) {
+  const { data } = useQuery({
+    queryKey: [COURSES_KEY],
+    queryFn: courseService.getCourses,
+  })
+
   const [open, setOpen] = React.useState(false)
 
   return (
@@ -47,7 +42,7 @@ export function CoursePicker({ value, onChange }: CoursePickerProps) {
           className="w-full justify-between"
         >
           {value
-            ? courses.find((course) => course.id === value)?.label
+            ? data?.find((course) => course.id === value)?.courseName
             : 'Selecione o curso...'}
           <ChevronsUpDown className="opacity-50" />
         </Button>
@@ -58,7 +53,7 @@ export function CoursePicker({ value, onChange }: CoursePickerProps) {
           <CommandList>
             <CommandEmpty>Curso não encontrado</CommandEmpty>
             <CommandGroup>
-              {courses.map((course) => (
+              {data?.map((course) => (
                 <CommandItem
                   key={course.id}
                   value={course.id}
@@ -68,7 +63,7 @@ export function CoursePicker({ value, onChange }: CoursePickerProps) {
                     setOpen(false)
                   }}
                 >
-                  {course.label}
+                  {course.courseName}
                   <Check
                     className={cn(
                       'ml-auto',

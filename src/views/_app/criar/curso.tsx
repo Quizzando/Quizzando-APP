@@ -9,6 +9,7 @@ import { CourseCategoryPicker } from './-components/course-category-picker'
 import type { Course } from '@/@types'
 import { courseService } from '@/models/services/CourseService'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { COURSES_KEY, DISCIPLINES_KEY } from '@/constants/keys'
 
 export const Route = createFileRoute('/_app/criar/curso')({
   component: RouteComponent,
@@ -25,7 +26,7 @@ export type CursoFormData = {
 
 function RouteComponent() {
   // const { mutate } = useMutation({
-    
+  //   mutationKey: [],
   // })
 
   const [courseName, setCourseName] = useState('')
@@ -47,7 +48,9 @@ function RouteComponent() {
       rating,
     }
 
-    console.log(cursoData)
+    // console.log(cursoData)
+
+    console.log('Cursos existentes:', data)
 
     // TESTE
     // const cursos = await quizService.getCourses()

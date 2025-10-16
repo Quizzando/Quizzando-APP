@@ -17,6 +17,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import type { Answer, Question } from '@/@types'
+import { useMutation } from '@tanstack/react-query'
+import { DISCIPLINES_KEY } from '@/constants/keys'
 
 type CreateAnswer = Omit<Answer, 'questionId'>
 type CreateQuestion = Omit<Question, 'disciplineId'>
@@ -50,7 +52,7 @@ function RouteComponent() {
   const [courseId, setCourseId] = useState('')
 
   const [questions, setQuestions] = useState<CreateQuestion[]>(() => 
-    Array.from({ length: 1 }, createEmptyQuestion)
+    Array.from({ length: 4 }, createEmptyQuestion)
   )
 
   const addQuestion = () => {
