@@ -2,80 +2,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
 import { Trophy, Medal, Award } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-// Ranking Mockado
-const rankingData = [
-  {
-    id: 1,
-    name: 'Ana Silva',
-    avatar: '/professional-woman-student.jpg',
-    score: 9850,
-    rank: 1,
-  },
-  {
-    id: 2,
-    name: 'Carlos Santos',
-    avatar: '/professional-man-student.jpg',
-    score: 9720,
-    rank: 2,
-  },
-  {
-    id: 3,
-    name: 'Beatriz Costa',
-    avatar: '/professional-woman-student-glasses.jpg',
-    score: 9680,
-    rank: 3,
-  },
-  {
-    id: 4,
-    name: 'Diego Oliveira',
-    avatar: '/professional-man-student-beard.jpg',
-    score: 9450,
-    rank: 4,
-  },
-  {
-    id: 5,
-    name: 'Elena Rodrigues',
-    avatar: '/professional-woman-student-smile.jpg',
-    score: 9320,
-    rank: 5,
-  },
-  {
-    id: 6,
-    name: 'Felipe Almeida',
-    avatar: '/professional-man-student-casual.jpg',
-    score: 9180,
-    rank: 6,
-  },
-  {
-    id: 7,
-    name: 'Gabriela Lima',
-    avatar: '/professional-woman-student-curly-hair.jpg',
-    score: 9050,
-    rank: 7,
-  },
-  {
-    id: 8,
-    name: 'Henrique Martins',
-    avatar: '/professional-man-student-young.jpg',
-    score: 8920,
-    rank: 8,
-  },
-  {
-    id: 9,
-    name: 'Isabela Ferreira',
-    avatar: '/professional-woman-student-professional.jpg',
-    score: 8850,
-    rank: 9,
-  },
-  {
-    id: 10,
-    name: 'João Pereira',
-    avatar: '/professional-man-student-confident.jpg',
-    score: 8720,
-    rank: 10,
-  },
-]
+import { rankingService } from '@/models/services/RankingService'
+import { useQuery } from '@tanstack/react-query'
+import { RANKING_KEY } from '@/constants/keys'
+import { useEffect, useState } from 'react'
+import type { UserRanking } from '@/models/services/RankingService'
 
 function getRankIcon(rank: number) {
   switch (rank) {
@@ -104,10 +35,21 @@ function getRankBadgeColor(rank: number) {
 }
 
 export function RankingTable() {
+  const { data } = useQuery({
+    queryKey: [RANKING_KEY],
+    queryFn: () => rankingService.getRanking(1, 10),
+  })
+  const [listUsers, setListUsers] = useState([] as UserRanking[] | null)
+  useEffect(() => {
+    if (data?.items) {
+      setListUsers(data.items)
+    }
+  })
+
   return (
     <div className="space-y-3">
-      {rankingData.map((user, index) => {
-        const isTopThree = user.rank <= 3
+      {listUsers?.map((user, index) => {
+        const isTopThree = index <= 2 // Top 3 usuários
 
         return (
           <Card
@@ -123,21 +65,21 @@ export function RankingTable() {
               <div
                 className={cn(
                   'flex h-12 w-12 shrink-0 items-center justify-center rounded-full font-bold text-lg',
-                  getRankBadgeColor(user.rank),
+                  getRankBadgeColor(index + 1),
                 )}
               >
-                
-                {isTopThree ? getRankIcon(user.rank) : user.rank}
+                {isTopThree ? getRankIcon(index + 1) : index + 1}
               </div>
 
               {/* Avatar */}
               <Avatar className="h-14 w-14 md:h-16 md:w-16 shrink-0 ring-2 ring-border">
                 <AvatarImage
-                  src={user.avatar || '/placeholder.svg'}
-                  alt={user.name}
+                  // src={user.avatar || '/placeholder.svg'}
+                  src="/placeholder.svg"
+                  alt={user.username}
                 />
                 <AvatarFallback className="bg-primary/10 text-primary font-semibold">
-                  {user.name
+                  {user.username
                     .split(' ')
                     .map((n) => n[0])
                     .join('')
@@ -148,7 +90,7 @@ export function RankingTable() {
               {/* Name */}
               <div className="flex-1 min-w-0">
                 <h3 className="font-semibold text-lg text-foreground truncate">
-                  {user.name}
+                  {user.username}
                 </h3>
               </div>
 
