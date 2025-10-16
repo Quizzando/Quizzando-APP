@@ -31,4 +31,18 @@ export const userService = {
       throw error
     }
   },
+  async increaseScore(userId: string, newValue: string): Promise<void> {
+    try {
+      const token = getToken()
+      if (!token) throw new Error('Token não encontrado')
+
+      await fetch(`${API_BASE_URL}/user/${userId}/score/${newValue}`, {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${token}` }
+      })
+    } catch (error) {
+      console.error('Erro ao atualizar score do usuário:', error)
+      throw error
+    }
+  }
 }

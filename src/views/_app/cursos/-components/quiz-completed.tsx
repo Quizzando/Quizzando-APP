@@ -9,19 +9,25 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { useAuth } from '@/hooks/useAuth'
 import { useQuiz } from '@/hooks/useQuiz'
+import { calcScore } from '@/utils/calcScore'
 import { Link } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
 export const QuizCompletedScreen = () => {
-  const { quiz, userScore, completeQuiz } = useQuiz()
+  const { quiz, userScore, completeQuiz} = useQuiz()
+  const {user} = useAuth()
 
   const totalQuestions = quiz?.questions.length ?? 0
   const { right, wrongs } = userScore
   const allAnswers = [...right, ...wrongs]
 
   useEffect(() => {
-    completeQuiz()
+    const score = calcScore(quiz?.questions!, allAnswers, Number(userScore.time))
+
+
+    completeQuiz(user?.id!, score)
     console.log(allAnswers)
   }, [])
 

@@ -1,5 +1,6 @@
 import type { Answer, Quiz } from '@/@types'
 import { disciplineService } from '@/models/services/DisciplineService'
+import { userService } from '@/models/services/UserService'
 import {
   createContext,
   useEffect,
@@ -20,7 +21,7 @@ export type QuizProviderState = {
   }
   currentQuestionIndex: number
   handleAnswer: (answer: Answer) => void
-  completeQuiz: () => void
+  completeQuiz: (userId: string, score: number) => void
   invalidateQuiz: () => void
   skipQuestion: () => void
 }
@@ -123,7 +124,7 @@ export const QuizProvider = ({ disciplineId, children }: QuizProviderProps) => {
 
   const isQuizCompletedRef = useRef(false)
 
-  const completeQuiz = () => {
+  const completeQuiz = async (userId: string, score: number) => {
     if (isQuizCompletedRef.current) return // already completed
     isQuizCompletedRef.current = true
 
@@ -139,6 +140,9 @@ export const QuizProvider = ({ disciplineId, children }: QuizProviderProps) => {
         time: formatElapsedTime(totalTime),
       }))
     }
+
+    // increase user score
+    await userService.increaseScore(userId, score.toString())
 
     toast.success('Quiz concluído!', {
       description: `Tempo total: ${userScore.time}`,
