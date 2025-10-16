@@ -1,55 +1,86 @@
-import { useState } from 'react'
-import { Search, Filter, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import { Badge } from '@/components/ui/badge'
-
-interface SearchFilters {
-  curso: string
-  disciplina: string
-  dificuldade: string
-  tempoCreacao: string
-}
+import { Search } from 'lucide-react'
+import { Input } from './ui/input'
+import { useState, useEffect } from 'react'
+import { useDebouncedCallback } from 'use-debounce'
+import { useQuery } from '@tanstack/react-query'
+import { DISCIPLINES_KEY } from '@/constants/keys'
+import { disciplineService } from '@/models/services/DisciplineService'
+import type { Discipline } from '@/@types'
+import { Link } from '@tanstack/react-router'
 
 export function QuizSearchBar() {
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filtered, setFiltered] = useState<Discipline[] | null>(null)
 
-  const handleSearch = () => {
-    console.log(
-      '[v0] Searching with query:',
-      searchQuery,
-    )
+  // === Fetch all disciplines once ===
+  const { data: disciplines, isFetching } = useQuery({
+    queryKey: [DISCIPLINES_KEY],
+    queryFn: () => disciplineService.getDisciplines(),
+  })
+
+  // === Debounced search logic (applies only to filtering) ===
+  const handleSearch = useDebouncedCallback((term: string) => {
+    if (!term.trim()) {
+      setFiltered(null)
+      return
+    }
+
+    const results =
+      disciplines?.filter((d) =>
+        d.disciplineName.toLowerCase().includes(term.toLowerCase()),
+      ) ?? []
+
+    setFiltered(results)
+  }, 300)
+
+  // === Update search term immediately ===
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const term = e.target.value
+    setSearchTerm(term)
+    handleSearch(term)
   }
 
+  // === Hide modal when no results or no term ===
+  const showResults = filtered && filtered.length > 0
+
   return (
-    <div className="flex-1 max-w-2xl mx-4">
+    <div className="relative w-full px-6">
       <div className="relative">
-        <div className="flex items-center space-x-2">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="text"
-              placeholder="Buscar quizzes..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-4 h-10 bg-background border-border focus:border-primary"
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-            />
-          </div>
-        </div>
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          type="text"
+          value={searchTerm}
+          onChange={handleChange}
+          placeholder="Buscar quizzes..."
+          className="w-full pl-10 pr-4 h-10 bg-background border-border focus:border-primary"
+        />
       </div>
+
+      {/* === Results === */}
+      {isFetching && (
+        <div className="mt-2 text-sm text-muted-foreground">Carregando...</div>
+      )}
+
+      {showResults && (
+        <ul className="max-h-[400px] overflow-y-scroll absolute top-16 left-0 w-full p-4 bg-card border-2 border-accent rounded-md shadow-md flex flex-col space-y-6">
+          {filtered!.map((discipline) => (
+            <li
+              key={discipline.id}
+              className="border-b-2 border-accent p-2 hover:shadow-lg"
+            >
+              <Link
+                to="/cursos/$courseId"
+                params={{ courseId: discipline.courseId }}
+              >
+                <p className="font-bold text-primary">
+                  {discipline.disciplineName}
+                </p>
+                <p>{discipline.description}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }

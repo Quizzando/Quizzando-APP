@@ -60,7 +60,7 @@ export const QuizProvider = ({ disciplineId, children }: QuizProviderProps) => {
   )
 
   const startTimeRef = useRef<Date | null>(null)
-  const timerInterval = useRef<number | null>(null)
+  const timerInterval = useRef<NodeJS.Timeout | null>(null)
 
   // Format time as mm:ss
   const formatElapsedTime = (ms: number) => {

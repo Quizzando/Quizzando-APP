@@ -17,11 +17,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import type { Answer, Question } from '@/@types'
-import { useMutation } from '@tanstack/react-query'
-import { DISCIPLINES_KEY } from '@/constants/keys'
 
 type CreateAnswer = Omit<Answer, 'questionId'>
-type CreateQuestion = Omit<Question, 'disciplineId'>
+type CreateQuestion = Omit<Question, 'disciplineId'> & {
+  answers: CreateAnswer[]
+}
 
 export const Route = createFileRoute('/_app/criar/disciplina')({
   component: RouteComponent,
@@ -34,7 +34,9 @@ export type QuizFormData = {
   questions: CreateQuestion[]
 }
 
-const createEmptyQuestion = (): CreateQuestion & { answers: CreateAnswer[] } => ({
+const createEmptyQuestion = (): CreateQuestion & {
+  answers: CreateAnswer[]
+} => ({
   questionStatement: '',
   difficulty: 0,
   answers: [
@@ -51,8 +53,8 @@ function RouteComponent() {
   const [description, setDescription] = useState('')
   const [courseId, setCourseId] = useState('')
 
-  const [questions, setQuestions] = useState<CreateQuestion[]>(() => 
-    Array.from({ length: 4 }, createEmptyQuestion)
+  const [questions, setQuestions] = useState<CreateQuestion[]>(() =>
+    Array.from({ length: 4 }, createEmptyQuestion),
   )
 
   const addQuestion = () => {
@@ -72,7 +74,7 @@ function RouteComponent() {
     const newQuestions = [...questions]
     newQuestions[index] = {
       ...newQuestions[index],
-      questionStatement: value
+      questionStatement: value,
     }
     setQuestions(newQuestions)
   }
@@ -81,7 +83,7 @@ function RouteComponent() {
     const newQuestions = [...questions]
     newQuestions[index] = {
       ...newQuestions[index],
-      difficulty: value
+      difficulty: value,
     }
     setQuestions(newQuestions)
   }
@@ -95,26 +97,28 @@ function RouteComponent() {
     const newAnswers = [...newQuestions[questionIndex].answers]
     newAnswers[answerIndex] = {
       ...newAnswers[answerIndex],
-      answerText: value
+      answerText: value,
     }
-    
+
     newQuestions[questionIndex] = {
       ...newQuestions[questionIndex],
-      answers: newAnswers
+      answers: newAnswers,
     }
     setQuestions(newQuestions)
   }
 
   const updateCorrectAnswer = (questionIndex: number, correctIndex: number) => {
     const newQuestions = [...questions]
-    const newAnswers = newQuestions[questionIndex].answers.map((answer, index) => ({
-      ...answer,
-      isCorrect: index === correctIndex
-    }))
-    
+    const newAnswers = newQuestions[questionIndex].answers.map(
+      (answer, index) => ({
+        ...answer,
+        isCorrect: index === correctIndex,
+      }),
+    )
+
     newQuestions[questionIndex] = {
       ...newQuestions[questionIndex],
-      answers: newAnswers
+      answers: newAnswers,
     }
     setQuestions(newQuestions)
   }

@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { createFileRoute } from '@tanstack/react-router'
 import { Edit } from 'lucide-react'
+import { useState } from 'react'
 
 export const Route = createFileRoute('/_app/perfil')({
   component: RouteComponent,
@@ -26,6 +27,9 @@ function RouteComponent() {
   if (!user) {
     return <div>carregando...</div>
   }
+
+  const [username, setUsername] = useState(user.username ?? '')
+  const handleChangeUsername = async () => {}
 
   return (
     <div className="container max-w-5xl mx-auto min-h-screen p-10">
@@ -45,22 +49,22 @@ function RouteComponent() {
           <h1 className="font-bold">Suas Informações</h1>
           <EditDialog
             label={'Apelido'}
-            value={user?.username}
+            value={username}
             type={'text'}
-            onChange={() => {}}
+            onChange={setUsername}
           />
-          <EditDialog
+          {/* <EditDialog
             label={'Email'}
             value={user?.email}
             type={'email'}
-            onChange={() => {}}
+            // onChange={() => {}}
           />
           <EditDialog
             label={'Senha'}
             value={user?.password ?? '1a2b3c4d'}
             type={'password'}
             onChange={() => {}}
-          />
+          /> */}
         </div>
       </div>
     </div>
@@ -72,11 +76,13 @@ const EditDialog = ({
   type,
   value,
   onChange,
+  disabled,
 }: {
   label: string
   value: string
-  onChange: string
+  onChange: (value: string) => void
   type: string
+  disabled?: boolean
 }) => {
   return (
     <AlertDialog>
@@ -103,6 +109,7 @@ const EditDialog = ({
           type={type}
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          disabled={disabled}
         />
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
