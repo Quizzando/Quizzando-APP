@@ -29,7 +29,7 @@ function RouteComponent() {
   }
 
   const [username, setUsername] = useState(user.username ?? '')
-  const handleChangeUsername = async () => {}
+  // const handleChangeUsername = async () => {}
 
   return (
     <div className="container max-w-5xl mx-auto min-h-screen p-10">

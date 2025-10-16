@@ -1,6 +1,6 @@
 import { Search } from 'lucide-react'
 import { Input } from './ui/input'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { useQuery } from '@tanstack/react-query'
 import { DISCIPLINES_KEY } from '@/constants/keys'

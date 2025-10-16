@@ -29,21 +29,21 @@ function RouteComponent() {
   const [courseName, setCourseName] = useState('')
   const [category, setCategory] = useState<0 | 1>(0)
   const [description, setDescription] = useState('')
-  const rating = 0
+  // const rating = 0
   const [icon, setIcon] = useState('')
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    const cursoData: CursoFormData = {
-      courseName,
-      description,
-      backgroundImage,
-      category,
-      icon,
-      rating,
-    }
+    // const cursoData: CursoFormData = {
+    //   courseName,
+    //   description,
+    //   backgroundImage,
+    //   category,
+    //   icon,
+    //   rating,
+    // }
 
     // console.log(cursoData)
 
