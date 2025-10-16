@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { Button } from '../ui/button'
 import { useAuth } from '@/hooks/useAuth'
 import { UserMenu } from '../UserMenu'
-import { House, Gamepad2, CirclePlus, ArrowRight } from 'lucide-react'
+import { House, Gamepad2, CirclePlus, ArrowRight, Medal } from 'lucide-react'
 import { QuizSearchBar } from '@/components/QuizSearchBar'
 
 export function Header() {
@@ -18,6 +18,11 @@ export function Header() {
       name: 'Jogar',
       href: '/cursos',
       icon: <Gamepad2 className="stroke-[1.6px]" />,
+    },
+    {
+      name: 'Rank',
+      href: '/rank',
+      icon: <Medal className="stroke-[1.6px]" />,
     },
   ]
 
@@ -64,13 +69,26 @@ export function Header() {
           {user ? (
             <>
               {user.admin && (
-                <Button
-                  variant="default"
-                  className="cursor-pointer hover:bg-accent"
-                >
-                  <CirclePlus className="size-5" />
-                  Crie um Quiz
-                </Button>
+                <div className='flex gap-1'>
+                  <Link to="/criar/curso">
+                    <Button
+                      variant="default"
+                      className="cursor-pointer hover:bg-accent"
+                    >
+                      <CirclePlus className="size-5" />
+                      Crie um Curso
+                    </Button>
+                  </Link>
+                  <Link to="/criar/disciplina">
+                    <Button
+                      variant="default"
+                      className="cursor-pointer hover:bg-accent"
+                    >
+                      <CirclePlus className="size-5" />
+                      Crie um Quiz
+                    </Button>
+                  </Link>
+                </div>
               )}
               <UserMenu user={user} />
             </>

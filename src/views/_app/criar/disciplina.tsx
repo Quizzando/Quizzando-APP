@@ -26,40 +26,36 @@ export const Route = createFileRoute('/_app/criar/disciplina')({
 })
 
 export type QuizFormData = {
-  name: string
+  disciplineName: string
   description?: string
   courseId: string
   questions: CreateQuestion[]
 }
 
+const createEmptyQuestion = (): CreateQuestion & { answers: CreateAnswer[] } => ({
+  questionStatement: '',
+  difficulty: 0,
+  answers: [
+    { answerText: '', isCorrect: true },
+    { answerText: '', isCorrect: false },
+    { answerText: '', isCorrect: false },
+    { answerText: '', isCorrect: false },
+    { answerText: '', isCorrect: false },
+  ],
+})
+
 function RouteComponent() {
-  const [name, setName] = useState('')
+  const [disciplineName, setDisciplineName] = useState('')
   const [description, setDescription] = useState('')
   const [courseId, setCourseId] = useState('')
-  // const [difficulty, setDifficulty] = useState<0 | 1 | 2>(0)
 
-  const emptyQuestion: CreateQuestion & { answers: CreateAnswer[] } = {
-    questionStatement: '',
-    difficulty: 0,
-    answers: [
-      { answerText: '', isCorrect: true },
-      { answerText: '', isCorrect: false },
-      { answerText: '', isCorrect: false },
-      { answerText: '', isCorrect: false },
-      { answerText: '', isCorrect: false },
-    ],
-  }
-
-  const [questions, setQuestions] = useState<CreateQuestion[]>([
-    emptyQuestion,
-    emptyQuestion,
-    emptyQuestion,
-    emptyQuestion,
-  ])
+  const [questions, setQuestions] = useState<CreateQuestion[]>(() => 
+    Array.from({ length: 1 }, createEmptyQuestion)
+  )
 
   const addQuestion = () => {
     if (questions.length < 10) {
-      setQuestions([...questions, emptyQuestion])
+      setQuestions([...questions, createEmptyQuestion()])
     }
   }
 
@@ -72,13 +68,19 @@ function RouteComponent() {
 
   const updateQuestionStatement = (index: number, value: string) => {
     const newQuestions = [...questions]
-    newQuestions[index].questionStatement = value
+    newQuestions[index] = {
+      ...newQuestions[index],
+      questionStatement: value
+    }
     setQuestions(newQuestions)
   }
 
   const updateQuestionDifficulty = (index: number, value: 0 | 1 | 2) => {
     const newQuestions = [...questions]
-    newQuestions[index].difficulty = value
+    newQuestions[index] = {
+      ...newQuestions[index],
+      difficulty: value
+    }
     setQuestions(newQuestions)
   }
 
@@ -88,15 +90,30 @@ function RouteComponent() {
     value: string,
   ) => {
     const newQuestions = [...questions]
-    newQuestions[questionIndex].answers[answerIndex].answerText = value
+    const newAnswers = [...newQuestions[questionIndex].answers]
+    newAnswers[answerIndex] = {
+      ...newAnswers[answerIndex],
+      answerText: value
+    }
+    
+    newQuestions[questionIndex] = {
+      ...newQuestions[questionIndex],
+      answers: newAnswers
+    }
     setQuestions(newQuestions)
   }
 
   const updateCorrectAnswer = (questionIndex: number, correctIndex: number) => {
     const newQuestions = [...questions]
-    newQuestions[questionIndex].answers.forEach((answer, index) => {
-      answer.isCorrect = index === correctIndex
-    })
+    const newAnswers = newQuestions[questionIndex].answers.map((answer, index) => ({
+      ...answer,
+      isCorrect: index === correctIndex
+    }))
+    
+    newQuestions[questionIndex] = {
+      ...newQuestions[questionIndex],
+      answers: newAnswers
+    }
     setQuestions(newQuestions)
   }
 
@@ -108,13 +125,12 @@ function RouteComponent() {
     e.preventDefault()
 
     const quizData: QuizFormData = {
-      name,
+      disciplineName,
       description,
       courseId,
       questions,
     }
 
-    // Depois implementar a lógica para enviar os dados para o backend
     console.log('Dados do quiz:', quizData)
   }
 
@@ -129,11 +145,11 @@ function RouteComponent() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="name">Nome do Quiz</Label>
+              <Label htmlFor="disciplineName">Nome do Quiz</Label>
               <Input
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                id="disciplineName"
+                value={disciplineName}
+                onChange={(e) => setDisciplineName(e.target.value)}
                 placeholder="Digite o nome do quiz"
                 required
               />

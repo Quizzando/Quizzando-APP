@@ -3,6 +3,7 @@ import { FormCard } from './-components/form-card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
 import { useState } from 'react'
 import { CourseCategoryPicker } from './-components/course-category-picker'
 import type { Course } from '@/@types'
@@ -15,10 +16,11 @@ export const Route = createFileRoute('/_app/criar/curso')({
 
 export type CursoFormData = {
   courseName: string
+  description: string
+  backgroundImage: string | null
   category: Course['category']
-  rating: number
-  backgroundImage: File | null
   icon: string
+  rating: number
 }
 
 function RouteComponent() {
@@ -28,21 +30,21 @@ function RouteComponent() {
 
   const [courseName, setCourseName] = useState('')
   const [category, setCategory] = useState(0)
-  const [rating, setRating] = useState(0)
+  const [description, setDescription] = useState('')
+  const rating = 0
   const [icon, setIcon] = useState('')
-
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null)
-  const [backgroundPreview, setBackgroundPreview] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     const cursoData: CursoFormData = {
       courseName,
-      category,
-      rating,
+      description,
       backgroundImage,
+      category,
       icon,
+      rating,
     }
 
     console.log(cursoData)
@@ -56,29 +58,12 @@ function RouteComponent() {
     // console.log(course)
   }
 
-  const handleCourseCategoryPicker = (value: string) => {
-    setCategory(Number(value))
-  }
-
-  const handleBackgroundImageChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const imageURL = e.target.value
-    if (imageURL) {
-      setBackgroundImage(imageURL)
-      setBackgroundPreview(imageURL)
-    } else {
-      setBackgroundImage(null)
-      setBackgroundPreview(null)
-    }
-  }
-
   return (
     <div className="flex items-center flex-col py-8 px-4">
       <FormCard formTitle="Criar novo Curso">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="courseName">Nome do Curso</Label>
+            <Label htmlFor="courseName">Nome</Label>
             <Input
               id="courseName"
               value={courseName}
@@ -87,17 +72,28 @@ function RouteComponent() {
               required
             />
           </div>
+          
+          <div className="space-y-2">
+              <Label htmlFor="description">Descrição</Label>
+              <Textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="De uma descrição para o curso"
+                rows={5}
+              />
+            </div>
 
           <div className="space-y-2">
             <Label htmlFor="backgroundImage">Imagem de Fundo</Label>
             <Input
               type="text"
               id="backgroundImage"
-              onChange={handleBackgroundImageChange}
+              onChange={(e) => setBackgroundImage(e.target.value)}
             />
-            {backgroundPreview && (
+            {backgroundImage && (
               <img
-                src={backgroundPreview}
+                src={backgroundImage}
                 alt="Imagem Preview"
                 className="mt-2"
               />
@@ -108,7 +104,7 @@ function RouteComponent() {
             <Label htmlFor="courseName">Categoria do Curso</Label>
             <CourseCategoryPicker
               value={String(category)}
-              onChange={handleCourseCategoryPicker}
+              onChange={(e) => setCategory(Number(e))}
             />
           </div>
 
