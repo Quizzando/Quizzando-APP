@@ -1,5 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card'
-import { Clock, PencilLine, Star } from 'lucide-react'
+import { Star } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import type { Course } from '@/@types'
 

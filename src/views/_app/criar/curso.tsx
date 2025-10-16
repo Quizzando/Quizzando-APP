@@ -7,9 +7,6 @@ import { Textarea } from '@/components/ui/textarea'
 import { useState } from 'react'
 import { CourseCategoryPicker } from './-components/course-category-picker'
 import type { Course } from '@/@types'
-import { courseService } from '@/models/services/CourseService'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { COURSES_KEY, DISCIPLINES_KEY } from '@/constants/keys'
 
 export const Route = createFileRoute('/_app/criar/curso')({
   component: RouteComponent,
@@ -30,7 +27,7 @@ function RouteComponent() {
   // })
 
   const [courseName, setCourseName] = useState('')
-  const [category, setCategory] = useState(0)
+  const [category, setCategory] = useState<0 | 1>(0)
   const [description, setDescription] = useState('')
   const rating = 0
   const [icon, setIcon] = useState('')
@@ -50,7 +47,7 @@ function RouteComponent() {
 
     // console.log(cursoData)
 
-    console.log('Cursos existentes:', data)
+    // console.log('Cursos existentes:', data)
 
     // TESTE
     // const cursos = await quizService.getCourses()
@@ -75,17 +72,17 @@ function RouteComponent() {
               required
             />
           </div>
-          
+
           <div className="space-y-2">
-              <Label htmlFor="description">Descrição</Label>
-              <Textarea
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="De uma descrição para o curso"
-                rows={5}
-              />
-            </div>
+            <Label htmlFor="description">Descrição</Label>
+            <Textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="De uma descrição para o curso"
+              rows={5}
+            />
+          </div>
 
           <div className="space-y-2">
             <Label htmlFor="backgroundImage">Imagem de Fundo</Label>
@@ -107,7 +104,7 @@ function RouteComponent() {
             <Label htmlFor="courseName">Categoria do Curso</Label>
             <CourseCategoryPicker
               value={String(category)}
-              onChange={(e) => setCategory(Number(e))}
+              onChange={(e) => setCategory(Number(e) as 0 | 1)}
             />
           </div>
 
